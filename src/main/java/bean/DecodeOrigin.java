@@ -22,6 +22,8 @@ public class DecodeOrigin {
     private String issuer;
     // 用户单位
     private String audience;
+    // default decode origin
+    public static DecodeOrigin defaultDecodeOrigin;
 
     /**
      * 判断解码元初始内容是否缺乏必须的内容
@@ -30,5 +32,19 @@ public class DecodeOrigin {
      */
     public boolean isNotEmpty() {
         return !(null == algOperator || null == issuer || null == audience);
+    }
+
+    /**
+     * get the default DecodeOrigin
+     *
+     * @return 默认的解密元
+     */
+    public static DecodeOrigin getDefaultEncodeOrigin() {
+        // if the instance is null , we will create an object
+        if (defaultDecodeOrigin == null) {
+            defaultDecodeOrigin =
+                    new DecodeOrigin("Skye", Algorithm.HMAC256("Skye"), "Skye", "vaccum.ltd");
+        }
+        return defaultDecodeOrigin;
     }
 }

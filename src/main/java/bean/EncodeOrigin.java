@@ -28,8 +28,12 @@ public class EncodeOrigin {
     private String audience;
     // 默认的签发时间是当前
     private Date issueTime = new Date();
-    // 默认的过期时间为1天
-    private long expireTime = 24 * 3600 * 1000L;
+    // 使用默认过期时间
+    private long expireTime = DEFAULT_EXPIRED_TIME;
+    // 默认过期时间为15天
+    public static long DEFAULT_EXPIRED_TIME = 15 * 24 * 3600 * 1000L;
+    // default encode origin
+    private static EncodeOrigin defaultEncodeOrigin;
 
     /**
      * 判断加密初始内容是否缺乏必须的内容
@@ -38,5 +42,30 @@ public class EncodeOrigin {
      */
     public boolean isNotEmpty() {
         return !(null == algOperator || null == issuer || null == subject || null == audience);
+    }
+
+    /**
+     * get the default EncodeOrigin
+     *
+     * @return the default encode origin
+     */
+    public static EncodeOrigin getDefaultEncodeOrigin() {
+        // if the instance is null , we will create an object
+        if (defaultEncodeOrigin == null) {
+            defaultEncodeOrigin =
+                    new EncodeOrigin(
+                            "Skye",
+                            Algorithm.HMAC256("Skye"),
+                            "Skye",
+                            "game_manage",
+                            "vaccum.ltd",
+                            new Date(),
+                            DEFAULT_EXPIRED_TIME);
+        }
+        // else update the issue time
+        else {
+            defaultEncodeOrigin.setIssueTime(new Date());
+        }
+        return defaultEncodeOrigin;
     }
 }
