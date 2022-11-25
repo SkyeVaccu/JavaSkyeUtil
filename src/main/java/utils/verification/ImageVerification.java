@@ -1,12 +1,15 @@
-package utils;
+package utils.verification;
 
-import bean.ImageVerificationCode;
 import exception.SkyeUtilsExceptionFactory;
 import exception.SkyeUtilsExceptionType;
 import log.SkyeLogger;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.slf4j.Logger;
+import utils.string.StringUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,19 +21,25 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 /**
- * @Description use the jwt draw the verification code image
+ * @Description
  * @Author Skye
- * @Date 2022/11/25 11:18
+ * @Date 2022/11/25 20:21
  */
-public class VerificationUtil {
-    /**
-     * 日志组件，用于打印对应的错误日
-     */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Accessors(chain = true)
+public class ImageVerification {
     private static final Logger logger = SkyeLogger.getLogger();
+
+    // 正确的照片验证码
+    private String trueCode;
+    // 照片的元数据
+    private String imageMetaData;
 
     @Accessors(chain = true)
     @Setter
-    public static class VerificationBuilder {
+    public static class ImageVerificationBuilder {
         //图片的宽度
         private int width = 120;
         //图片的高度
@@ -44,7 +53,7 @@ public class VerificationUtil {
         //验证码的位数
         private int randomStrDigit = 4;
 
-        public ImageVerificationCode build() {
+        public ImageVerification build() {
             if (width <= 0 || height <= 0) {
                 throw SkyeUtilsExceptionFactory.createException(
                         SkyeUtilsExceptionType.VerificationImageSizeErrorException);
@@ -86,12 +95,12 @@ public class VerificationUtil {
             graphics.setColor(
                     new Color(randomLinesColor[0], randomLinesColor[1], randomLinesColor[2], 100));
             Stream.of(new int[randomLineNum][4]).map(temp ->
-                    new int[]{
-                            (int) (Math.random() * width),
-                            (int) (Math.random() * height),
-                            (int) (Math.random() * width),
-                            (int) (Math.random() * height)
-                    })
+                            new int[]{
+                                    (int) (Math.random() * width),
+                                    (int) (Math.random() * height),
+                                    (int) (Math.random() * width),
+                                    (int) (Math.random() * height)
+                            })
                     .forEach(temp -> graphics.drawLine(temp[0], temp[1], temp[2], temp[3]));
             // draw the random str
             String randomStr = StringUtil.getRandomStr(randomStrDigit);
@@ -118,7 +127,7 @@ public class VerificationUtil {
          *
          * @return 验证码
          */
-        private ImageVerificationCode getImageVerificationCode() {
+        private ImageVerification getImageVerificationCode() {
             try {
                 // create the buffer image in cache
                 BufferedImage bufferedImage =
@@ -126,16 +135,15 @@ public class VerificationUtil {
                 // create the paint pen
                 Graphics graphics = bufferedImage.getGraphics();
                 // create the return object
-                ImageVerificationCode imageVerificationCode =
-                        new ImageVerificationCode()
-                                .setTrueCode(drawVerificationCode((Graphics2D) graphics));
+                ImageVerification imageVerification = new ImageVerification()
+                        .setTrueCode(drawVerificationCode((Graphics2D) graphics));
                 // convert the jwt image to a byte[]
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);
                 byteArrayOutputStream.flush();
                 byte[] bytes = byteArrayOutputStream.toByteArray();
-                imageVerificationCode.setImageMetaData(Base64.getEncoder().encodeToString(bytes));
-                return imageVerificationCode;
+                imageVerification.setImageMetaData(Base64.getEncoder().encodeToString(bytes));
+                return imageVerification;
             } catch (Exception e) {
                 throw SkyeUtilsExceptionFactory.createException(
                         SkyeUtilsExceptionType.CreateVerificationImageErrorException);

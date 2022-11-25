@@ -1,4 +1,4 @@
-package bean;
+package utils.jwt;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import lombok.AllArgsConstructor;

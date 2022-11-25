@@ -1,15 +1,12 @@
-package utils;
+package utils.string;
 
 import exception.SkyeUtilsExceptionFactory;
 import exception.SkyeUtilsExceptionType;
 import log.SkyeLogger;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import java.util.*;
-import java.util.function.BiFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -96,79 +93,5 @@ public class StringUtil {
         // filter the empty string and convert the list to array for returning
         // return array can keep the form is same as the origin split method
         return strings.stream().filter(StringUtils::isNotEmpty).toArray(String[]::new);
-    }
-
-    /**
-     * a build for splitting the str now it only supports the split operation and replace operation
-     */
-    @Accessors(chain = true)
-    @Setter
-    public static class StringOperateBuilder {
-        private String str;
-        private boolean needStart = false;
-        private String startSign;
-        private boolean startSignIsStartIndexOf = true;
-        private boolean needEnd = false;
-        private String endSign;
-        private boolean endSignIsStartIndexOf = false;
-
-        /**
-         * construct function
-         *
-         * @param str target str
-         */
-        public StringOperateBuilder(String str) {
-            this.str = str;
-        }
-
-        /**
-         * the function to building the target string
-         *
-         * @return the result String
-         */
-        public String build(BiFunction<Integer, Integer, String> consumer) {
-            int startIndex;
-            int endIndex;
-            if (StringUtils.isEmpty(startSign)) {
-                startIndex = startSignIsStartIndexOf ? 0 : str.length() - 1;
-            } else {
-                int startIndexTemp =
-                        startSignIsStartIndexOf
-                                ? StringUtils.indexOf(str, startSign)
-                                : StringUtils.lastIndexOf(str, startSign);
-                if (-1 == startIndexTemp) {
-                    throw SkyeUtilsExceptionFactory.createException(
-                            SkyeUtilsExceptionType.StrNotContainSignException);
-                }
-                startIndex = needStart ? startIndexTemp : startIndexTemp + startSign.length();
-            }
-            if (StringUtils.isEmpty(endSign)) {
-                endIndex = endSignIsStartIndexOf ? 0 : str.length();
-            } else {
-                int endIndexTemp =
-                        endSignIsStartIndexOf
-                                ? StringUtils.indexOf(str, endSign)
-                                : StringUtils.lastIndexOf(str, endSign);
-                if (-1 == endIndexTemp) {
-                    throw SkyeUtilsExceptionFactory.createException(
-                            SkyeUtilsExceptionType.StrNotContainSignException);
-                }
-                endIndex = needEnd ? endIndexTemp + endSign.length() : endIndexTemp;
-            }
-            if (startIndex >= endIndex) {
-                throw SkyeUtilsExceptionFactory.createException(
-                        SkyeUtilsExceptionType.StartSignBehindEndSignException);
-            }
-            return consumer.apply(startIndex, endIndex);
-        }
-
-        /**
-         * use the substring in the default situation
-         *
-         * @return the result str
-         */
-        public String build() {
-            return build(str::substring);
-        }
     }
 }

@@ -1,4 +1,4 @@
-package bean;
+package utils.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

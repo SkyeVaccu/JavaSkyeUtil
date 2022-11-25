@@ -1,8 +1,5 @@
-package utils;
+package utils.jwt;
 
-import bean.DecodeInfo;
-import bean.DecodeOrigin;
-import bean.EncodeOrigin;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
@@ -10,6 +7,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import exception.SkyeUtilsExceptionFactory;
 import exception.SkyeUtilsExceptionType;
+import utils.SerializeUtil;
 
 import java.util.Date;
 import java.util.HashMap;

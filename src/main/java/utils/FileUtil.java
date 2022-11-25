@@ -5,6 +5,7 @@ import exception.SkyeUtilsExceptionType;
 import log.SkyeLogger;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
+import utils.string.SubstringOperator;
 
 import java.io.File;
 
@@ -32,7 +33,7 @@ public class FileUtil {
         try {
             String absolutePath = file.getAbsolutePath();
             // get the path of new file
-            String newPath = new StringUtil.StringOperateBuilder(absolutePath)
+            String newPath = new SubstringOperator(absolutePath)
                     .setStartSign("/")
                     .setStartSignIsStartIndexOf(false)
                     .setEndSign(".")
@@ -59,7 +60,7 @@ public class FileUtil {
      * @return the extension name
      */
     public static String getFileExtensionName(String fileName) {
-        return new StringUtil.StringOperateBuilder(fileName)
+        return new SubstringOperator(fileName)
                 .setStartSign(".")
                 .setStartSignIsStartIndexOf(false)
                 .build();
