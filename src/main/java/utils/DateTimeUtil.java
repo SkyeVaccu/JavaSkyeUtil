@@ -135,7 +135,7 @@ public class DateTimeUtil {
         // which is used to match all operation
         private final String reg = "&&|>=|\\(|\\)|>[^=]{0}|==|<=|<[^=]{0}";
         // long string pattern
-        private final Pattern longPattern = Pattern.compile("[0-9]*");
+        private final Pattern longPattern = Pattern.compile("\\d*");
 
         /**
          * judge whether the dateTime can match the filterExpression
@@ -178,7 +178,7 @@ public class DateTimeUtil {
                         // push the operation into the stack
                         operationStack.push(currentStr);
                     }
-                    // we has encountered the value
+                    // we have encountered the value
                     else {
                         // put the value to the string stack
                         valueStack.push(currentStr);

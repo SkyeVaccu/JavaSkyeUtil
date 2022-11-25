@@ -81,7 +81,7 @@ public enum SkyeUtilsExceptionType {
         this.exception = new SkyeUtilsException(message, errorCode);
     }
 
-    protected SkyeUtilsException getException() {
+    SkyeUtilsException getException() {
         return exception;
     }
 }

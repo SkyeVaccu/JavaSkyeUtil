@@ -31,11 +31,17 @@ public class VerificationUtil {
     @Accessors(chain = true)
     @Setter
     public static class VerificationBuilder {
+        //图片的宽度
         private int width = 120;
+        //图片的高度
         private int height = 40;
+        //图片的背景色
         private Color backgroundColor = Color.WHITE;
+        //图片的字体颜色
         private Color borderColor = Color.WHITE;
+        //图片中随机线的数量
         private int randomLineNum = 4;
+        //验证码的位数
         private int randomStrDigit = 4;
 
         public ImageVerificationCode build() {

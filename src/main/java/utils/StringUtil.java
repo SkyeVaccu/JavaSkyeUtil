@@ -70,16 +70,6 @@ public class StringUtil {
     }
 
     /**
-     * join the string array to a "a:b:c"
-     *
-     * @param elements the elements used to join
-     * @return joined string
-     */
-    public static String joinRedisKey(CharSequence... elements) {
-        return String.join(":", elements);
-    }
-
-    /**
      * spilt the string by the regexp , and keep the match string
      *
      * @param originString the origin string

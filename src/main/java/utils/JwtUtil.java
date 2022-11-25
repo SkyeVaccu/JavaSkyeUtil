@@ -63,8 +63,7 @@ public class JwtUtil {
      * @param paramClasses 用户需要的数据
      * @return 包装后的DecodeInfo
      */
-    public static DecodeInfo decode(
-            String encodeStr, DecodeOrigin decodeOrigin, Map<String, Class<?>> paramClasses) {
+    public static DecodeInfo decode(String encodeStr, DecodeOrigin decodeOrigin, Map<String, Class<?>> paramClasses) {
         if ((!decodeOrigin.isNotEmpty()) || null == encodeStr || null == paramClasses) {
             throw SkyeUtilsExceptionFactory.createException(
                     SkyeUtilsExceptionType.LackDecodeInfoException);
