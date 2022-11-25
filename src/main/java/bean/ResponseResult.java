@@ -1,10 +1,10 @@
 package bean;
 
-import com.google.common.collect.ImmutableMap;
 import exception.SkyeUtilsException;
 import log.SkyeLogger;
 import lombok.Data;
 import org.slf4j.Logger;
+import utils.MapUtil;
 import utils.SerializeUtil;
 
 import java.util.Map;
@@ -56,7 +56,7 @@ public class ResponseResult {
     @Override
     public String toString() {
         try {
-            Map<String, Object> data = ImmutableMap.of("code", code, "script", script);
+            Map<Object, Object> data = MapUtil.of("code", code, "script", script);
             if (null != responseData) {
                 data.put("responseData", responseData);
             }
