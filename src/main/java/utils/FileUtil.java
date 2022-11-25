@@ -32,8 +32,7 @@ public class FileUtil {
         try {
             String absolutePath = file.getAbsolutePath();
             // get the path of new file
-            String newPath = new StringUtil()
-                    .newBuilder(absolutePath)
+            String newPath = new StringUtil.StringOperateBuilder(absolutePath)
                     .setStartSign("/")
                     .setStartSignIsStartIndexOf(false)
                     .setEndSign(".")

@@ -78,7 +78,7 @@ public class SmsUtil {
      * @param phoneNumber 需要发送的用户电话
      * @return 返回发送的验证码
      */
-    public String sendSmsVerify(int digest, String... phoneNumber) throws Exception {
+    public String sendVerifySms(int digest, String... phoneNumber) throws Exception {
         ArrayList<String> phoneNumberList = new ArrayList<>();
         // 默认为国内电话，添加86前缀
         for (String s : phoneNumber) {

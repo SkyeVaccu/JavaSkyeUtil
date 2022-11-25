@@ -123,7 +123,7 @@ public class DateTimeUtil {
          *
          * <p>Simple example: "(this >= 2022-03-05) && this.year > 5"
          */
-        private String filterExpression;
+        private final String filterExpression;
 
         // define the operation key word which will appear in the filter expression
         // "&&","||" is the lower operation

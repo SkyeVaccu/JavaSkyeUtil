@@ -30,8 +30,8 @@ public class MailUtil {
 
     private static final Logger logger = SkyeLogger.getLogger();
 
-    public static final String STMP_PROTOCOL = "stmp";
-
+    // 对应的STMP协议
+    private static final String STMP_PROTOCOL = "stmp";
     // 邮件的配置信息
     private Properties properties;
     // 是否开启debug

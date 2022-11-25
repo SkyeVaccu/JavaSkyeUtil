@@ -181,15 +181,4 @@ public class StringUtil {
             return build(str::substring);
         }
     }
-
-    /**
-     * @return a builder to split the String
-     */
-    public StringOperateBuilder newBuilder(String str) {
-        if (StringUtils.isEmpty(str)) {
-            logger.error("操作字符串为空");
-            throw new RuntimeException("操作字符串为空");
-        }
-        return new StringOperateBuilder(str);
-    }
 }
