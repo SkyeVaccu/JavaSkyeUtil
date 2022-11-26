@@ -17,8 +17,8 @@ public class MapUtil {
      * @param value 值
      * @return 填充后的map
      */
-    public static Map<Object, Object> of(Object key, Object value) {
-        HashMap<Object, Object> map = new HashMap<>(1);
+    public static <K, V> Map<K, V> of(K key, V value) {
+        HashMap<K, V> map = new HashMap<>(1);
         map.put(key, value);
         return map;
     }
@@ -32,8 +32,8 @@ public class MapUtil {
      * @param value2 值2
      * @return 填充后的map
      */
-    public static Map<Object, Object> of(Object key1, Object value1, Object key2, Object value2) {
-        HashMap<Object, Object> map = new HashMap<>(2);
+    public static <K, V> Map<K, V> of(K key1, V value1, K key2, V value2) {
+        HashMap<K, V> map = new HashMap<>(2);
         map.put(key1, value1);
         map.put(key2, value2);
         return map;
@@ -50,8 +50,8 @@ public class MapUtil {
      * @param value3 值3
      * @return 填充后的map
      */
-    public static Map<Object, Object> of(Object key1, Object value1, Object key2, Object value2, Object key3, Object value3) {
-        HashMap<Object, Object> map = new HashMap<>(3);
+    public static <K, V> Map<K, V> of(K key1, V value1, K key2, V value2, K key3, V value3) {
+        HashMap<K, V> map = new HashMap<>(3);
         map.put(key1, value1);
         map.put(key2, value2);
         map.put(key3, value3);
@@ -71,8 +71,8 @@ public class MapUtil {
      * @param value4 值4
      * @return 填充后的map
      */
-    public static Map<Object, Object> of(Object key1, Object value1, Object key2, Object value2, Object key3, Object value3, Object key4, Object value4) {
-        HashMap<Object, Object> map = new HashMap<>(4);
+    public static <K, V> Map<K, V> of(K key1, V value1, K key2, V value2, K key3, V value3, K key4, V value4) {
+        HashMap<K, V> map = new HashMap<>(4);
         map.put(key1, value1);
         map.put(key2, value2);
         map.put(key3, value3);

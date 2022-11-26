@@ -1,6 +1,7 @@
 package utils.web_socket;
 
-import java.util.HashMap;
+import utils.collection.MapUtil;
+
 import java.util.Map;
 
 /**
@@ -24,9 +25,8 @@ public class WebSocketUtil {
             loop = webSocketController.loop();
             subject = webSocketController.subject();
         }
-        Map<String, String> map = new HashMap<>(2);
-        map.put("loop", loop);
-        map.put("subject", subject);
-        return map;
+        return MapUtil.of(
+                "loop", loop,
+                "subject", subject);
     }
 }

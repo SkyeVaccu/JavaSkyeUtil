@@ -13,6 +13,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.handshake.HandshakedataImpl1;
 import org.slf4j.Logger;
 import utils.SerializeUtil;
+import utils.collection.MapUtil;
 import utils.collection.Table;
 import utils.web_socket.WebSocketPackage;
 import utils.web_socket.WebSocketUtil;
@@ -132,10 +133,9 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
                     webSocketServerSenders.add((WebSocketServerSender) webSocketServerOperator);
                 }
             }
-            Map<String, List<? extends WebSocketServerOperator>> map = new HashMap<>(2);
-            map.put("webSocketReceivers", webSocketServerReceivers);
-            map.put("webSocketSenders", webSocketServerSenders);
-            return map;
+            return MapUtil.of(
+                    "webSocketReceivers", webSocketServerReceivers,
+                    "webSocketSenders", webSocketServerSenders);
         }
 
         public WebSocketServer build() {
