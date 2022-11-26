@@ -29,15 +29,7 @@ public class WebSocketPackage {
     private String loop;
     // 该包在回路中的主题
     private String subject;
-    //该数据包的类型，发送或者接收数据包
-    private WebSocketPackageType webSocketPackageType;
     //附加信息
     public Map<String, Object> additionalInfos;
 
-    public enum WebSocketPackageType {
-        //发送数据包
-        SEND,
-        //接收数据包
-        RECEIVE;
-    }
 }
