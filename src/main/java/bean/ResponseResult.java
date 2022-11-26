@@ -4,8 +4,8 @@ import exception.SkyeUtilsException;
 import log.SkyeLogger;
 import lombok.Data;
 import org.slf4j.Logger;
-import utils.MapUtil;
 import utils.SerializeUtil;
+import utils.collection.MapUtil;
 
 import java.util.Map;
 

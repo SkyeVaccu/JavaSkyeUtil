@@ -73,6 +73,15 @@ public enum SkyeUtilsExceptionType {
     LogoutErrorException("注销账号失败", 10052),
     RetryFunctionIsEmptyException("重试方法为空", 10053),
     WebSocketSendNewErrorException("WebSocketSendNew类型信息处理错误", 10054),
+    WebSocketServerOpenEventException("WebSocket服务器打开事件异常", 10055),
+    WebSocketServerCloseEventException("WebSocket服务器关闭事件异常", 10056),
+    WebSocketServerMessageEventException("WebSocket服务器处理事件异常", 10057),
+    WebSocketServerErrorEventException("WebSocket服务器错误事件异常", 10058),
+    WebSocketServerStartEventException("WebSocket服务器启动事件异常", 10059),
+    TableRowNotExistException("Table行不存在错误", 10060),
+    TableColumnNotExistException("Table列不存在错误", 10061),
+    WebSocketConnectionCloseException("WebSocket连接已关闭", 10062),
+    WebSocketClientParamErrorException("WebSocket客户端参数不能为为空", 10063),
     ;
 
     private final SkyeUtilsException exception;
