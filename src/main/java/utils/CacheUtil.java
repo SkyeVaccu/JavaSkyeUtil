@@ -2,8 +2,6 @@ package utils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,12 +15,6 @@ public class CacheUtil {
      * the local cache container
      */
     private static final Map<String, Object> CACHE = new ConcurrentHashMap<>();
-
-    /**
-     * a Thread pool whose size is 6,it is for removing the data in the cache
-     */
-    @SuppressWarnings("AlibabaThreadPoolCreation")
-    private static final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(6);
 
     /**
      * 放入某个数据
@@ -62,11 +54,9 @@ public class CacheUtil {
      */
     public static <T> void put(String key, T value, TimeUnit timeUnit, long time) {
         CACHE.put(key, value);
-        scheduledExecutorService.schedule(
-                () -> {
-                    CACHE.remove(key, value);
-                },
-                time,
-                timeUnit);
+        //提交一个延期任务
+        AsyncUtil.submitTaskDelayed(() -> {
+            CACHE.remove(key, value);
+        }, time, timeUnit);
     }
 }
