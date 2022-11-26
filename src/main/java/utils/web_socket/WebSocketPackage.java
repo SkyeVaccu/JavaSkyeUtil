@@ -25,7 +25,7 @@ public class WebSocketPackage {
     private Object content;
     //该包的发送时间
     private Long time;
-    //该包所在的主题回路
+    //该包所在的回路
     private String loop;
     // 该包在回路中的主题
     private String subject;
