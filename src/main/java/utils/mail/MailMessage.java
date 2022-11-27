@@ -3,7 +3,7 @@ package utils.mail;
 import javax.mail.Message;
 
 /**
- * @Description @Author Skye @Date 2022/11/27 12:57
+ * @Description 邮件信息接口 @Author Skye @Date 2022/11/27 12:57
  */
 public interface MailMessage {
     /**
