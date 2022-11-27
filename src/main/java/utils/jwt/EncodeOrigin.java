@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * @Description 用于构造加密器的加密元
- * @Author Skye
- * @Date 2022/11/25 11:14
+ * @Description 用于构造加密器的加密元 @Author Skye @Date 2022/11/25 11:14
  */
 @Data
 @AllArgsConstructor
@@ -19,7 +17,7 @@ public class EncodeOrigin {
     // 对应的算法密钥
     private String algOperator;
     // 指定对应的算法
-    private Algorithm alg = Algorithm.HMAC256(algOperator);
+    private Algorithm alg;
     // 签发者
     private String issuer;
     // 主题

@@ -10,9 +10,7 @@ import utils.collection.MapUtil;
 import java.util.Map;
 
 /**
- * @Description 用于包装返回对象
- * @Author Skye
- * @Date 2022/11/25 10:56
+ * @Description 用于包装返回对象 @Author Skye @Date 2022/11/25 10:56
  */
 @Data
 public class ResponseResult {
@@ -37,9 +35,7 @@ public class ResponseResult {
         this.responseData = responseData;
     }
 
-    /**
-     * 设置一个使用异常的构造方法
-     */
+    /** 设置一个使用异常的构造方法 */
     public ResponseResult(Throwable e) {
         if (e instanceof SkyeUtilsException) {
             this.code = ((SkyeUtilsException) e).getErrorCode();
@@ -50,9 +46,7 @@ public class ResponseResult {
         }
     }
 
-    /**
-     * 重写toString方法
-     */
+    /** 重写toString方法 */
     @Override
     public String toString() {
         try {

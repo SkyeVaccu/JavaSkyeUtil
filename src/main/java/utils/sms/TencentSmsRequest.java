@@ -12,9 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 /**
- * @Description 腾讯短信请求
- * @Author Skye
- * @Date 2022/11/25 20:08
+ * @Description 腾讯短信请求 @Author Skye @Date 2022/11/25 20:08
  */
 @AllArgsConstructor
 @Getter
@@ -31,9 +29,9 @@ public class TencentSmsRequest {
         private String sdkAppId;
         // 短信的签名内容
         private String signName;
-        //通过审核的模板Id
+        // 通过审核的模板Id
         private String templateId;
-        //模板对应的内容
+        // 模板对应的内容
         private String[] templateContent;
 
         public TencentSmsRequest build() {
@@ -49,7 +47,7 @@ public class TencentSmsRequest {
             sendSmsRequest.setSignName(signName);
             // 设置摸板Id
             sendSmsRequest.setTemplateId(templateId);
-            //设置模板内容
+            // 设置模板内容
             if (!ObjectUtils.isEmpty(templateContent)) {
                 sendSmsRequest.setTemplateParamSet(templateContent);
             }

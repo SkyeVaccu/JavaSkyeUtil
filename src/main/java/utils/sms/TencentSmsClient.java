@@ -17,9 +17,7 @@ import org.slf4j.Logger;
 import java.util.ArrayList;
 
 /**
- * @Description 腾讯短信请求
- * @Author Skye
- * @Date 2022/11/25 20:05
+ * @Description 腾讯短信请求 @Author Skye @Date 2022/11/25 20:05
  */
 @AllArgsConstructor
 @Getter
@@ -33,22 +31,25 @@ public class TencentSmsClient {
      * 发送短信
      *
      * @param tencentSmsRequest 腾讯短信请求对象
-     * @param phoneNumber       接收短信的手机号
+     * @param phoneNumber 接收短信的手机号
      * @throws Exception 短信发送异常
      */
-    public void sendSmsRequest(TencentSmsRequest tencentSmsRequest, String... phoneNumber) throws Exception {
+    public void sendSmsRequest(TencentSmsRequest tencentSmsRequest, String... phoneNumber)
+            throws Exception {
         ArrayList<String> phoneNumberList = new ArrayList<>();
         // 默认为国内电话，添加86前缀
         for (String s : phoneNumber) {
-            if (null == s || 11 == s.length()) {
+            if (!SmsUtil.isPhoneNumberLegal(s)) {
                 throw SkyeUtilsExceptionFactory.createException(
                         SkyeUtilsExceptionType.SMSPhoneNumberFormatErrorException);
             }
             phoneNumberList.add("+86" + s);
         }
         // 设置要发送的手机号
-        tencentSmsRequest.getSendSmsRequest().setPhoneNumberSet(phoneNumberList.toArray(String[]::new));
-        //发送短信
+        tencentSmsRequest
+                .getSendSmsRequest()
+                .setPhoneNumberSet(phoneNumberList.toArray(String[]::new));
+        // 发送短信
         SendSmsResponse res = smsClient.SendSms(tencentSmsRequest.getSendSmsRequest());
         SendStatus[] sendStatusSet = res.getSendStatusSet();
         for (SendStatus temp : sendStatusSet) {

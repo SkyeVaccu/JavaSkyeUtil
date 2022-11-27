@@ -5,9 +5,7 @@ import utils.collection.MapUtil;
 import java.util.Map;
 
 /**
- * @Description WebSocket相关工具类
- * @Author Skye
- * @Date 2022/11/26 16:58
+ * @Description WebSocket相关工具类 @Author Skye @Date 2022/11/26 16:58
  */
 public class WebSocketUtil {
     /**
@@ -16,8 +14,10 @@ public class WebSocketUtil {
      * @param webSocketOperator 操作器对象
      * @return 对应的回路和主题
      */
-    public static Map<String, String> parseWebSocketController(WebSocketOperator webSocketOperator) {
-        WebSocketController[] webSocketControllers = webSocketOperator.getClass().getAnnotationsByType(WebSocketController.class);
+    public static Map<String, String> parseWebSocketController(
+            WebSocketOperator webSocketOperator) {
+        WebSocketController[] webSocketControllers =
+                webSocketOperator.getClass().getAnnotationsByType(WebSocketController.class);
         // 获得其对应的回路和主题
         String loop = null;
         String subject = null;

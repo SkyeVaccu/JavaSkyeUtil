@@ -1,9 +1,7 @@
 package exception;
 
 /**
- * @Description 异常的工厂对象
- * @Author Skye
- * @Date 2022/11/25 10:57
+ * @Description 异常的工厂对象 @Author Skye @Date 2022/11/25 10:57
  */
 public class SkyeUtilsExceptionFactory {
 

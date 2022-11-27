@@ -5,21 +5,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Description use the locale to store object
- * @Author Skye
- * @Date 2022/11/25 10:58
+ * @Description use the locale to store object @Author Skye @Date 2022/11/25 10:58
  */
 public class CacheUtil {
 
-    /**
-     * the local cache container
-     */
+    /** the local cache container */
     private static final Map<String, Object> CACHE = new ConcurrentHashMap<>();
 
     /**
      * 放入某个数据
      *
-     * @param key   键
+     * @param key 键
      * @param value 值
      */
     public static <T> void put(String key, T value) {
@@ -47,16 +43,19 @@ public class CacheUtil {
     /**
      * 放入信息后，延迟一定时间删除
      *
-     * @param key      对应的Key
-     * @param value    对应的值
+     * @param key 对应的Key
+     * @param value 对应的值
      * @param timeUnit 时间单位
-     * @param time     时间
+     * @param time 时间
      */
     public static <T> void put(String key, T value, TimeUnit timeUnit, long time) {
         CACHE.put(key, value);
-        //提交一个延期任务
-        AsyncUtil.submitTaskDelayed(() -> {
-            CACHE.remove(key, value);
-        }, time, timeUnit);
+        // 提交一个延期任务
+        AsyncUtil.submitTaskDelayed(
+                () -> {
+                    CACHE.remove(key, value);
+                },
+                time,
+                timeUnit);
     }
 }

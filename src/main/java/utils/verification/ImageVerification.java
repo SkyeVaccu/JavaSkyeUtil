@@ -21,9 +21,7 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 /**
- * @Description
- * @Author Skye
- * @Date 2022/11/25 20:21
+ * @Description @Author Skye @Date 2022/11/25 20:21
  */
 @Data
 @AllArgsConstructor
@@ -40,17 +38,17 @@ public class ImageVerification {
     @Accessors(chain = true)
     @Setter
     public static class ImageVerificationBuilder {
-        //图片的宽度
+        // 图片的宽度
         private int width = 120;
-        //图片的高度
+        // 图片的高度
         private int height = 40;
-        //图片的背景色
+        // 图片的背景色
         private Color backgroundColor = Color.WHITE;
-        //图片的字体颜色
+        // 图片的字体颜色
         private Color borderColor = Color.WHITE;
-        //图片中随机线的数量
+        // 图片中随机线的数量
         private int randomLineNum = 4;
-        //验证码的位数
+        // 验证码的位数
         private int randomStrDigit = 4;
 
         public ImageVerification build() {
@@ -91,20 +89,23 @@ public class ImageVerification {
             graphics.setColor(borderColor);
             graphics.drawRect(1, 1, width - 2, height - 2);
             // draw the random line
-            int[] randomLinesColor = Arrays.stream(new int[3]).map(e -> new Random().nextInt() * 255).toArray();
+            int[] randomLinesColor =
+                    Arrays.stream(new int[3]).map(e -> new Random().nextInt(255) + 1).toArray();
             graphics.setColor(
                     new Color(randomLinesColor[0], randomLinesColor[1], randomLinesColor[2], 100));
-            Stream.of(new int[randomLineNum][4]).map(temp ->
-                            new int[]{
-                                    (int) (Math.random() * width),
-                                    (int) (Math.random() * height),
-                                    (int) (Math.random() * width),
-                                    (int) (Math.random() * height)
-                            })
+            Stream.of(new int[randomLineNum][4])
+                    .map(
+                            temp ->
+                                    new int[] {
+                                        (int) (Math.random() * width),
+                                        (int) (Math.random() * height),
+                                        (int) (Math.random() * width),
+                                        (int) (Math.random() * height)
+                                    })
                     .forEach(temp -> graphics.drawLine(temp[0], temp[1], temp[2], temp[3]));
             // draw the random str
             String randomStr = StringUtil.getRandomStr(randomStrDigit);
-            int[] charX = new int[]{5};
+            int[] charX = new int[] {5};
             Stream.of(randomStr.toCharArray())
                     .forEach(
                             temp -> {
@@ -135,8 +136,9 @@ public class ImageVerification {
                 // create the paint pen
                 Graphics graphics = bufferedImage.getGraphics();
                 // create the return object
-                ImageVerification imageVerification = new ImageVerification()
-                        .setTrueCode(drawVerificationCode((Graphics2D) graphics));
+                ImageVerification imageVerification =
+                        new ImageVerification()
+                                .setTrueCode(drawVerificationCode((Graphics2D) graphics));
                 // convert the jwt image to a byte[]
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);

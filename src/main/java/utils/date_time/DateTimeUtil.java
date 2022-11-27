@@ -3,6 +3,7 @@ package utils.date_time;
 import exception.SkyeUtilsExceptionFactory;
 import exception.SkyeUtilsExceptionType;
 import log.SkyeLogger;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
@@ -12,17 +13,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @Description 时间工具
- * @Author Skye
- * @Date 2022/11/25 10:59
+ * @Description 时间工具 @Author Skye @Date 2022/11/25 10:59
  */
 public class DateTimeUtil {
 
     private static final Logger logger = SkyeLogger.getLogger();
 
-    /**
-     * 全局的格式化字符串,其存在默认值
-     */
+    /** 全局的格式化字符串,其存在默认值 */
     private static String[] globalDateFormatString = {"yyyy-MM-dd hh:mm:ss"};
 
     /**
@@ -31,7 +28,7 @@ public class DateTimeUtil {
      * @param dateFormatStrings 需要使用到的时间格式字符串
      */
     public static void initGlobalDateFormatString(String... dateFormatStrings) {
-        if (StringUtils.isAnyEmpty(dateFormatStrings)) {
+        if (StringUtils.isAnyEmpty(dateFormatStrings) || ObjectUtils.isEmpty(dateFormatStrings)) {
             logger.error("传入的格式字符串不能为空或者Null");
             throw new NullPointerException();
         }
@@ -41,13 +38,13 @@ public class DateTimeUtil {
     /**
      * 将字符串转成日期类型，允许用户传入多个格式字符串，按照顺序依次 转换，直到找到第一个成功的为止
      *
-     * @param timeStr          时间字符串
+     * @param timeStr 时间字符串
      * @param dateFormatString 用户传入的不定长的格式字符串
      * @return 转换后的时间对象
      */
     public static Date convertStringToDate(String timeStr, String... dateFormatString) {
         // 如果用户没有传入，则使用全局的部分
-        if (StringUtils.isAnyEmpty(dateFormatString)) {
+        if (StringUtils.isAnyEmpty(dateFormatString) || ObjectUtils.isEmpty(dateFormatString)) {
             dateFormatString = globalDateFormatString;
         }
         // 判断时间字符串是否为空
@@ -79,12 +76,12 @@ public class DateTimeUtil {
     /**
      * 将对应的日期对象按照格式转化为字符串，允许多个格式字符串，依次找到第一个合适的结束
      *
-     * @param date             日期对象
+     * @param date 日期对象
      * @param dateFormatString 格式字符串
      * @return 转换后的时间字符串
      */
     public static String convertDateToString(Date date, String... dateFormatString) {
-        if (StringUtils.isAnyEmpty(dateFormatString)) {
+        if (StringUtils.isAnyEmpty(dateFormatString) || ObjectUtils.isEmpty(dateFormatString)) {
             dateFormatString = globalDateFormatString;
         }
         // 判断日期是否为null

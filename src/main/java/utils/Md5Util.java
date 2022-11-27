@@ -7,9 +7,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 
 /**
- * @Description 单向的加解密算法
- * @Author Skye
- * @Date 2022/11/25 11:12
+ * @Description 单向的加解密算法 @Author Skye @Date 2022/11/25 11:12
  */
 public class Md5Util {
 

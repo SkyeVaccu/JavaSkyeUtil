@@ -8,21 +8,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Description 由行列确定唯一值的table
- * @Author Skye
- * @Date 2022/11/25 23:35
+ * @Description 由行列确定唯一值的table @Author Skye @Date 2022/11/25 23:35
  */
 public class Table<Q, P, K> {
 
-    //对应存储的实际对象
+    // 对应存储的实际对象
     private final Map<Q, Map<P, K>> table = new HashMap<>();
 
     /**
      * 放入值
      *
-     * @param row    对应的行
+     * @param row 对应的行
      * @param column 对应的列
-     * @param value  对应位置的值
+     * @param value 对应位置的值
      */
     public void put(Q row, P column, K value) {
         Map<P, K> pkMap = table.get(row);
@@ -35,7 +33,7 @@ public class Table<Q, P, K> {
     /**
      * 获得对应位置的值
      *
-     * @param row    对应的行
+     * @param row 对应的行
      * @param column 对应的列
      * @return 对应位置的值
      */
@@ -48,11 +46,10 @@ public class Table<Q, P, K> {
         }
     }
 
-
     /**
      * 移除对应位置的值
      *
-     * @param row    行
+     * @param row 行
      * @param column 列
      */
     public void remove(Q row, P column) {
@@ -97,7 +94,7 @@ public class Table<Q, P, K> {
      * @return 该行所有数据
      */
     public Map<P, K> getRow(Q row) {
-        return table.get(row);
+        return table.get(row) == null ? new HashMap<>() : table.get(row);
     }
 
     /**
@@ -117,5 +114,4 @@ public class Table<Q, P, K> {
         }
         return map;
     }
-
 }

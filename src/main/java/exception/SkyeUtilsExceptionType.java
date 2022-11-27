@@ -1,15 +1,11 @@
 package exception;
 
 /**
- * @Description 自定义异常类的种类
- * @Author Skye
- * @Date 2022/11/25 10:58
+ * @Description 自定义异常类的种类 @Author Skye @Date 2022/11/25 10:58
  */
 public enum SkyeUtilsExceptionType {
 
-    /**
-     * 用于定义所有的将会用到的异常
-     */
+    /** 用于定义所有的将会用到的异常 */
     CreateBeanException("转换为Bean失败", 10001),
     CreateBeanListException("转换为Bean列表失败", 10002),
     GetObjectJsonException("获得对象对应Json失败", 10003),
@@ -82,6 +78,7 @@ public enum SkyeUtilsExceptionType {
     TableColumnNotExistException("Table列不存在错误", 10061),
     WebSocketConnectionCloseException("WebSocket连接已关闭", 10062),
     WebSocketClientParamErrorException("WebSocket客户端参数不能为为空", 10063),
+    WebSocketServerParamErrorException("WebSocket服务端参数不能为为空", 10064),
     ;
 
     private final SkyeUtilsException exception;

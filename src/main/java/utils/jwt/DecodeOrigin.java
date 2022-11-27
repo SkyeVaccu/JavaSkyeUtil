@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @Description 用于构造解码器的解码元
- * @Author Skye
- * @Date 2022/11/25 10:51
+ * @Description 用于构造解码器的解码元 @Author Skye @Date 2022/11/25 10:51
  */
 @Data
 @AllArgsConstructor
@@ -17,7 +15,7 @@ public class DecodeOrigin {
     // 对应的算法密钥
     private String algOperator;
     // 算法对象
-    private Algorithm alg = Algorithm.HMAC256(algOperator);
+    private Algorithm alg;
     // 主题
     private String issuer;
     // 用户单位

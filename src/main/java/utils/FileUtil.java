@@ -10,9 +10,7 @@ import utils.string.SubstringOperator;
 import java.io.File;
 
 /**
- * @Description a tool for operating the file
- * @Author Skye
- * @Date 2022/11/25 11:01
+ * @Description a tool for operating the file @Author Skye @Date 2022/11/25 11:01
  */
 public class FileUtil {
 
@@ -21,7 +19,7 @@ public class FileUtil {
     /**
      * change the file name
      *
-     * @param file    the old file
+     * @param file the old file
      * @param newName the new file name
      * @return new file
      */
@@ -33,18 +31,22 @@ public class FileUtil {
         try {
             String absolutePath = file.getAbsolutePath();
             // get the path of new file
-            String newPath = new SubstringOperator(absolutePath)
-                    .setStartSign("/")
-                    .setStartSignIsStartIndexOf(false)
-                    .setEndSign(".")
-                    .setEndSignIsStartIndexOf(false)
-                    .build(
-                            (startIndex, endIndex) ->
-                                    StringUtils.substring(absolutePath, 0, startIndex)
-                                            + newName
-                                            + StringUtils.substring(absolutePath, endIndex, absolutePath.length()));
+            String newPath =
+                    new SubstringOperator(absolutePath)
+                            .setStartSign("\\")
+                            .setStartSignIsStartIndexOf(false)
+                            .setEndSign(".")
+                            .setEndSignIsStartIndexOf(false)
+                            .build(
+                                    (startIndex, endIndex) ->
+                                            StringUtils.substring(absolutePath, 0, startIndex)
+                                                    + newName
+                                                    + StringUtils.substring(
+                                                            absolutePath,
+                                                            endIndex,
+                                                            absolutePath.length()));
             File outputFile = new File(newPath);
-            //rename the file
+            // rename the file
             boolean renameResult = file.renameTo(outputFile);
             return outputFile;
         } catch (Exception e) {

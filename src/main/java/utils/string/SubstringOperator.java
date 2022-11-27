@@ -9,9 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.function.BiFunction;
 
 /**
- * @Description a build for splitting the str now it only supports the split operation and replace operation
- * @Author Skye
- * @Date 2022/11/25 20:26
+ * @Description a build for splitting the str now it only supports the split operation and replace
+ * operation @Author Skye @Date 2022/11/25 20:26
  */
 @Accessors(chain = true)
 @Setter

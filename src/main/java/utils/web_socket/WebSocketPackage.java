@@ -8,36 +8,34 @@ import lombok.experimental.Accessors;
 import java.util.Map;
 
 /**
- * @Description WebSocket数据包
- * @Author Skye
- * @Date 2022/11/25 22:31
+ * @Description WebSocket数据包 @Author Skye @Date 2022/11/25 22:31
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
 public class WebSocketPackage {
-    //该包的id
+    // 该包的id
     private String id;
-    //包响应的Id
+    // 包响应的Id
     private String responseId;
-    //包的内容
+    // 包的内容
     private Object content;
-    //该包的发送时间
+    // 该包的发送时间
     private Long time;
-    //该包所在的回路
+    // 该包所在的回路
     private String loop;
     // 该包在回路中的主题
     private String subject;
-    //该数据包的类型，请求或者响应数据包
+    // 该数据包的类型，请求或者响应数据包
     private WebSocketPackageType webSocketPackageType;
-    //附加信息
+    // 附加信息
     public Map<String, Object> additionalInfos;
 
     public enum WebSocketPackageType {
-        //请求数据包
+        // 请求数据包
         REQUEST,
-        //响应数据包
+        // 响应数据包
         RESPONSE;
     }
 }

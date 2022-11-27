@@ -9,9 +9,7 @@ import net.coobird.thumbnailator.Thumbnails;
 import java.io.File;
 
 /**
- * @Description the tool to compress the image
- * @Author Skye
- * @Date 2022/11/25 20:15
+ * @Description the tool to compress the image @Author Skye @Date 2022/11/25 20:15
  */
 @Accessors(chain = true)
 @Setter
@@ -25,10 +23,8 @@ public class ImageCompressor {
     // the new target file path
     private String newPath;
 
-    /**
-     * build the builder for completing the image
-     */
-    public void build() {
+    /** build the builder for completing the image */
+    public void compress() {
         // judge the legality of the file or path
         boolean fileState = null != file && ImageUtil.isImage(file.getAbsolutePath());
         boolean oldPathState = ImageUtil.isImage(oldPath);
@@ -53,7 +49,10 @@ public class ImageCompressor {
         } else {
             // is valid for compressing the image
             if (!oldPathState) {
-                compressImage(file.getAbsolutePath(), newPathState ? newPath : file.getAbsolutePath(), this.compressRatio);
+                compressImage(
+                        file.getAbsolutePath(),
+                        newPathState ? newPath : file.getAbsolutePath(),
+                        this.compressRatio);
             } else if (!newPathState) {
                 throw SkyeUtilsExceptionFactory.createException(
                         SkyeUtilsExceptionType.LackNewFilePathException);
@@ -67,8 +66,8 @@ public class ImageCompressor {
     /**
      * the true process for compress image
      *
-     * @param oldPath       文件的旧路径
-     * @param newPath       文件的新路径
+     * @param oldPath 文件的旧路径
+     * @param newPath 文件的新路径
      * @param compressRatio 压缩比例
      */
     private void compressImage(String oldPath, String newPath, float compressRatio) {

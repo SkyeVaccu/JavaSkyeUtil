@@ -9,18 +9,15 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * @Description 时间表达式判断器
- * @Author Skye
- * @Date 2022/11/25 20:13
+ * @Description 时间表达式判断器 @Author Skye @Date 2022/11/25 20:13
  */
 @AllArgsConstructor
 public class DateFilter {
     /**
-     * the filter expression of the datetime which is express how to filter the date for example
-     * , you can use the expression like the math expression , "this" can represent the target
-     * date which need to be filter , you can use the dot sign "." to use the corresponding
-     * attribute include
-     * "this.year","this.month","this.day","this.hour","this.minute","this.second".
+     * the filter expression of the datetime which is express how to filter the date for example ,
+     * you can use the expression like the math expression , "this" can represent the target date
+     * which need to be filter , you can use the dot sign "." to use the corresponding attribute
+     * include "this.year","this.month","this.day","this.hour","this.minute","this.second".
      *
      * <p>Simple example: "(this >= 2022-03-05) && this.year > 5"
      */
@@ -31,10 +28,11 @@ public class DateFilter {
     // "(" is the highest operation
     // ")" is the lowest operation
     // other sign is the normal operation
-    private final List<String> allOperations = Arrays.asList("==", ">", "<", ">=", "<=", "&&", "||", "(", ")");
+    private final List<String> allOperations =
+            Arrays.asList("==", ">", "<", ">=", "<=", "&&", "||", "(", ")");
     private final List<String> highOperations = Arrays.asList("==", ">", "<", ">=", "<=");
     // which is used to match all operation
-    private final String reg = "&&|>=|\\(|\\)|>[^=]{0}|==|<=|<[^=]{0}";
+    private final String reg = "\\|\\||&&|>=|\\(|\\)|>[^=]{0}|==|<=|<[^=]{0}";
     // long string pattern
     private final Pattern longPattern = Pattern.compile("\\d*");
 
@@ -51,7 +49,8 @@ public class DateFilter {
             // which is store the every operation part in the filter expression
             Stack<String> operationStack = new Stack<>();
             // replace all blank string,and split the origin str according the target
-            String[] stringArray = StringUtil.splitAndKeepMatchStr(filterExpression.replaceAll(" ", ""), reg);
+            String[] stringArray =
+                    StringUtil.splitAndKeepMatchStr(filterExpression.replaceAll(" ", ""), reg);
             // pretreat all sign to the specific value
             pretreatSignValue(dateTime, stringArray);
             // traverse the string array
@@ -97,7 +96,7 @@ public class DateFilter {
     /**
      * pretreat all signs in the expression ,we will convert it to the target value
      *
-     * @param dateTime    the time is corresponded to the "this"
+     * @param dateTime the time is corresponded to the "this"
      * @param stringArray the string array which is need to be handle
      */
     private void pretreatSignValue(Date dateTime, String[] stringArray) {
@@ -106,7 +105,8 @@ public class DateFilter {
             // if we need to handle it
             if (!allOperations.contains(stringArray[i])) {
                 // convert it to the target value
-                stringArray[i] = String.valueOf(parseValueFromCallFormula(dateTime, stringArray[i]));
+                stringArray[i] =
+                        String.valueOf(parseValueFromCallFormula(dateTime, stringArray[i]));
             }
         }
     }
@@ -114,7 +114,7 @@ public class DateFilter {
     /**
      * parse the single sign to the target value
      *
-     * @param dateTime    the time is corresponded to the "this"
+     * @param dateTime the time is corresponded to the "this"
      * @param callFormula the sign string
      * @return the long value
      */
@@ -156,7 +156,9 @@ public class DateFilter {
         } else {
             try {
                 // if it is a date str, parse it to a Date object
-                Date date = DateTimeUtil.convertStringToDate(callFormula, "yyyy-MM-dd", "yyyy-MM-dd hh:mm:ss");
+                Date date =
+                        DateTimeUtil.convertStringToDate(
+                                callFormula, "yyyy-MM-dd", "yyyy-MM-dd hh:mm:ss");
                 currentComputeValue = date.getTime();
             } catch (Exception e) {
                 // if it is the long ,we need to compare it
@@ -167,10 +169,10 @@ public class DateFilter {
     }
 
     /**
-     * judge the level between the topOperation and the current operation if the top operation
-     * is higher than current operation , then return true
+     * judge the level between the topOperation and the current operation if the top operation is
+     * higher than current operation , then return true
      *
-     * @param topOperation     the operation at the top of the operation stack
+     * @param topOperation the operation at the top of the operation stack
      * @param currentOperation the current operation which we have encountered
      * @return judge the level, top operation is higher , then return true,otherwise return false
      */
@@ -186,13 +188,17 @@ public class DateFilter {
     /**
      * handle the Expression
      *
-     * @param valueStack         the stack stored the value
-     * @param operationStack     the stack stored the operation
+     * @param valueStack the stack stored the value
+     * @param operationStack the stack stored the operation
      * @param needHandleBrackets the situation when encounter the brackets
-     * @param needEmptyStack     whether empty the stack at last
+     * @param needEmptyStack whether empty the stack at last
      * @return the result of expression
      */
-    private boolean handleCurrentExpression(Stack<String> valueStack, Stack<String> operationStack, boolean needHandleBrackets, boolean needEmptyStack) {
+    private boolean handleCurrentExpression(
+            Stack<String> valueStack,
+            Stack<String> operationStack,
+            boolean needHandleBrackets,
+            boolean needEmptyStack) {
         int count = 0;
         for (Iterator<String> iterator = operationStack.iterator(); iterator.hasNext(); count++) {
             // we don't need to empty the stack
@@ -219,12 +225,12 @@ public class DateFilter {
             // judge the type which we need to handle
             final boolean typeIsLong = longPattern.matcher(leftValueStr).matches();
             // compute the expression
-            Object leftValue = typeIsLong
-                    ? Long.parseLong(leftValueStr)
-                    : Boolean.parseBoolean(leftValueStr);
-            Object rightValue = typeIsLong
-                    ? Long.parseLong(rightValueStr)
-                    : Boolean.parseBoolean(rightValueStr);
+            Object leftValue =
+                    typeIsLong ? Long.parseLong(leftValueStr) : Boolean.parseBoolean(leftValueStr);
+            Object rightValue =
+                    typeIsLong
+                            ? Long.parseLong(rightValueStr)
+                            : Boolean.parseBoolean(rightValueStr);
             // get the result of the expression
             Boolean result = computeSingleFormula(leftValue, rightValue, operation);
             // push the value into
@@ -237,15 +243,15 @@ public class DateFilter {
     /**
      * compute the formula, it can handle the boolean formula and the long formula
      *
-     * @param leftValue  the left value which is in the left of the operation
+     * @param leftValue the left value which is in the left of the operation
      * @param rightValue the left value which is in the left of the operation
-     * @param operation  the operation
+     * @param operation the operation
      * @return return the result
      */
     private Boolean computeSingleFormula(Object leftValue, Object rightValue, String operation) {
         switch (operation) {
             case "==":
-                return leftValue == rightValue;
+                return (long) leftValue == (long) rightValue;
             case ">=":
                 return (long) leftValue >= (long) rightValue;
             case "<=":

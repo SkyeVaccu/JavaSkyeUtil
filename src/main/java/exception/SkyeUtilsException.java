@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @Description 自定义的异常类
- * @Author Skye
- * @Date 2022/11/25 10:57
+ * @Description 自定义的异常类 @Author Skye @Date 2022/11/25 10:57
  */
 @Setter
 @Getter

@@ -3,7 +3,6 @@ package utils.mail;
 import exception.SkyeUtilsExceptionFactory;
 import exception.SkyeUtilsExceptionType;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
@@ -16,15 +15,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @Description 简单邮件信息
- * @Author Skye
- * @Date 2022/11/25 20:18
+ * @Description 简单邮件信息 @Author Skye @Date 2022/11/25 20:18
  */
 @AllArgsConstructor
-@Getter
-public class SimpleMailMessage {
-    //邮件对象
+public class SimpleMailMessage implements MailMessage {
+    // 邮件对象
     private Message message;
+
+    @Override
+    public Message getMessage() {
+        return message;
+    }
 
     @Accessors(chain = true)
     @Setter
@@ -33,13 +34,13 @@ public class SimpleMailMessage {
         private String subject;
         // 邮件的内容
         private String content;
-        //会话对象
+        // 会话对象
         private MailSession mailSession;
         // 收件人
         private String[] mails;
 
         public SimpleMailMessage build() throws Exception {
-            //检查主体和内容
+            // 检查主体和内容
             if (StringUtils.isAnyEmpty(subject, content)) {
                 throw SkyeUtilsExceptionFactory.createException(
                         SkyeUtilsExceptionType.MessageSubjectAndCotentErrorException);
@@ -51,7 +52,8 @@ public class SimpleMailMessage {
             }
             Message message = new MimeMessage(mailSession.getSession());
             // 指定发送人
-            message.setFrom(new InternetAddress(mailSession.getProperties().getProperty("mail.host")));
+            message.setFrom(
+                    new InternetAddress(mailSession.getProperties().getProperty("username")));
             // 讲所有的收件人地址进行转换
             List<Address> addressList = new LinkedList<>();
             for (String mail : mails) {

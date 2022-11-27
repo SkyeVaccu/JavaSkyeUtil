@@ -1,42 +1,22 @@
 package utils.string;
 
-import exception.SkyeUtilsExceptionFactory;
-import exception.SkyeUtilsExceptionType;
 import log.SkyeLogger;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 /**
- * @Description 字符串处理工具
- * @Author Skye
- * @Date 2022/11/25 11:17
+ * @Description 字符串处理工具 @Author Skye @Date 2022/11/25 11:17
  */
 public class StringUtil {
 
     private static final Logger logger = SkyeLogger.getLogger();
-
-    /**
-     * 判断Map中是否有指定的参数
-     *
-     * @param params 需要检查的Map
-     * @param keys   需要存在的所有Key
-     */
-    public static void isKeyInMap(Map<String, Object> params, String... keys) {
-        Stream.of(keys).forEach(s -> {
-            if (null == params) {
-                logger.error("检查的Map和键Key不能为null");
-                throw new NullPointerException();
-            } else if (!params.containsKey(s)) {
-                throw SkyeUtilsExceptionFactory.createException(
-                        SkyeUtilsExceptionType.LackParamException);
-            }
-        });
-    }
 
     /**
      * 生成一个随机的指定位数的数字字符串
@@ -61,7 +41,8 @@ public class StringUtil {
         StringBuilder stringBuilder = new StringBuilder();
         String baseNumLetter = "0123456789ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         for (int i = 0; i < digits; i++) {
-            stringBuilder.append(baseNumLetter.charAt((int) (Math.random() * baseNumLetter.length())));
+            stringBuilder.append(
+                    baseNumLetter.charAt((int) (Math.random() * baseNumLetter.length())));
         }
         return stringBuilder.toString();
     }
@@ -70,7 +51,7 @@ public class StringUtil {
      * spilt the string by the regexp , and keep the match string
      *
      * @param originString the origin string
-     * @param reg          the reg
+     * @param reg the reg
      * @return the result String array
      */
     public static String[] splitAndKeepMatchStr(String originString, String reg) {

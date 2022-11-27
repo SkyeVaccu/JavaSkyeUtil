@@ -5,9 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 /**
- * @Description 照片工具
- * @Author Skye
- * @Date 2022/11/25 11:08
+ * @Description 照片工具 @Author Skye @Date 2022/11/25 11:08
  */
 public class ImageUtil {
 
