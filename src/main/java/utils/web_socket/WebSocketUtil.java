@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class WebSocketUtil {
     /**
-     * 解析操作器上的注释
+     * 解析操作器上的WebSocketController注释
      *
      * @param webSocketOperator 操作器对象
      * @return 对应的回路和主题
