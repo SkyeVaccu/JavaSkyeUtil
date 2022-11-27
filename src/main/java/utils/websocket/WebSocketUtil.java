@@ -1,4 +1,4 @@
-package utils.web_socket;
+package utils.websocket;
 
 import utils.collection.MapUtil;
 

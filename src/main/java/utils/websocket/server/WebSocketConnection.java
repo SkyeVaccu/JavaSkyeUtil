@@ -1,4 +1,4 @@
-package utils.web_socket.server;
+package utils.websocket.server;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.java_websocket.WebSocket;
 import utils.SerializeUtil;
-import utils.web_socket.WebSocketPackage;
+import utils.websocket.WebSocketPackage;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package utils.web_socket.client;
+package utils.websocket.client;
 
 import exception.SkyeUtilsExceptionFactory;
 import exception.SkyeUtilsExceptionType;
@@ -16,8 +16,8 @@ import org.slf4j.Logger;
 import utils.AsyncUtil;
 import utils.SerializeUtil;
 import utils.collection.Table;
-import utils.web_socket.WebSocketPackage;
-import utils.web_socket.WebSocketUtil;
+import utils.websocket.WebSocketPackage;
+import utils.websocket.WebSocketUtil;
 
 import java.net.URI;
 import java.util.HashMap;

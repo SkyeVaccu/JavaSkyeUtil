@@ -53,7 +53,7 @@ public class AsyncUtil {
      */
     public static void submitTaskPeriod(
             Runnable runnable, long delayedTime, long periodTime, TimeUnit timeUnit, Integer time) {
-        ScheduledFuture[] scheduledFutures = new ScheduledFuture[1];
+        ScheduledFuture<?>[] scheduledFutures = new ScheduledFuture[1];
         ScheduledFuture<?> scheduledFuture =
                 scheduledExecutorService.scheduleAtFixedRate(
                         () -> {

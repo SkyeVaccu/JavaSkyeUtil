@@ -1,6 +1,6 @@
-package utils.web_socket.client;
+package utils.websocket.client;
 
-import utils.web_socket.WebSocketPackage;
+import utils.websocket.WebSocketPackage;
 
 /**
  * @Description WebSocketClient 接收器 @Author Skye @Date 2022/11/26 16:08

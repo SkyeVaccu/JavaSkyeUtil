@@ -1,6 +1,6 @@
-package utils.web_socket.client;
+package utils.websocket.client;
 
-import utils.web_socket.WebSocketOperator;
+import utils.websocket.WebSocketOperator;
 
 /**
  * @Description WebSocketClient操作器 @Author Skye @Date 2022/11/26 9:51

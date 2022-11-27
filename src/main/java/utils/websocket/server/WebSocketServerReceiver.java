@@ -1,6 +1,6 @@
-package utils.web_socket.server;
+package utils.websocket.server;
 
-import utils.web_socket.WebSocketPackage;
+import utils.websocket.WebSocketPackage;
 
 /**
  * @Description websocket Server 接收者 @Author Skye @Date 2022/11/26 9:31

@@ -1,4 +1,4 @@
-package utils.web_socket.server;
+package utils.websocket.server;
 
 import exception.SkyeUtilsExceptionFactory;
 import exception.SkyeUtilsExceptionType;
@@ -18,8 +18,8 @@ import utils.AsyncUtil;
 import utils.SerializeUtil;
 import utils.collection.MapUtil;
 import utils.collection.Table;
-import utils.web_socket.WebSocketPackage;
-import utils.web_socket.WebSocketUtil;
+import utils.websocket.WebSocketPackage;
+import utils.websocket.WebSocketUtil;
 
 import java.lang.reflect.Field;
 import java.net.InetSocketAddress;

@@ -1,4 +1,4 @@
-package utils.web_socket;
+package utils.websocket;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,6 +36,6 @@ public class WebSocketPackage {
         // 请求数据包
         REQUEST,
         // 响应数据包
-        RESPONSE;
+        RESPONSE,
     }
 }

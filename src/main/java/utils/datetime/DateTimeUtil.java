@@ -1,4 +1,4 @@
-package utils.date_time;
+package utils.datetime;
 
 import exception.SkyeUtilsExceptionFactory;
 import exception.SkyeUtilsExceptionType;

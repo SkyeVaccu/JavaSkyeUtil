@@ -1,4 +1,4 @@
-package utils.web_socket;
+package utils.websocket;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

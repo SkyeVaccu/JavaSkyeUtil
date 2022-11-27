@@ -1,8 +1,8 @@
-package utils.web_socket.server;
+package utils.websocket.server;
 
 import exception.SkyeUtilsExceptionFactory;
 import exception.SkyeUtilsExceptionType;
-import utils.web_socket.WebSocketPackage;
+import utils.websocket.WebSocketPackage;
 
 /**
  * @Description websocket Server 发送者 @Author Skye @Date 2022/11/26 9:32

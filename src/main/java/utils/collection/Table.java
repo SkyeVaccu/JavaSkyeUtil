@@ -94,7 +94,7 @@ public class Table<Q, P, K> {
      * @return 该行所有数据
      */
     public Map<P, K> getRow(Q row) {
-        return table.get(row) == null ? new HashMap<>() : table.get(row);
+        return table.get(row) == null ? new HashMap<>(6) : table.get(row);
     }
 
     /**
@@ -104,7 +104,7 @@ public class Table<Q, P, K> {
      * @return 该列所有数据
      */
     public Map<Q, K> getColumn(P column) {
-        Map<Q, K> map = new HashMap<>();
+        Map<Q, K> map = new HashMap<>(6);
         for (Map.Entry<Q, Map<P, K>> entry : table.entrySet()) {
             Q row = entry.getKey();
             Map<P, K> pkMap = entry.getValue();
