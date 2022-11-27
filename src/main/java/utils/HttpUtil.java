@@ -2,7 +2,6 @@ package utils;
 
 import exception.SkyeUtilsExceptionFactory;
 import exception.SkyeUtilsExceptionType;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URI;
@@ -44,9 +43,8 @@ public class HttpUtil {
                 return false;
             }
             Object value = entry.getValue();
-            // 判断是否是基本数据类型,以及对应的值是否为空
-            if ((!(value.getClass().isPrimitive() || value instanceof String))
-                    || ObjectUtils.isEmpty(value)) {
+            // 如果值为字符串，其不能为空
+            if (value instanceof String && StringUtils.isEmpty((String) value)) {
                 return false;
             }
         }
