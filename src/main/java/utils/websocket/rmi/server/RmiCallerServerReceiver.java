@@ -41,8 +41,10 @@ public class RmiCallerServerReceiver extends WebSocketServerReceiver implements 
                 SerializeUtil.convertMapToBeanByClass(
                         (Map<String, Object>) webSocketPackage.getContent(),
                         new TypeReference<>() {});
+        // TODO 需要对返回值进行反序列化
+        Object returnValue = remoteMethodResponseWrapper.getReturnValue();
         // 设置对应的result
-        modifiableFutureTask.setResult(remoteMethodResponseWrapper.getReturnValue());
+        modifiableFutureTask.setResult(returnValue);
         // TODO 将任务提交到线程池执行，使得可以返回值
         new Thread(modifiableFutureTask).start();
     }
