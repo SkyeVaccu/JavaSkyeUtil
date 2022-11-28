@@ -47,7 +47,6 @@ public class ReflectUtil {
                             .collect(Collectors.toList());
             return aClass.getMethod(
                     methodDefinition.getMethodName(), parameterClassList.toArray(Class[]::new));
-
         } catch (Exception e) {
             e.printStackTrace();
             throw SkyeUtilsExceptionFactory.createException(
