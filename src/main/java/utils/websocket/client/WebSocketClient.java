@@ -27,9 +27,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-/**
- * @Description WebSocket客户端 @Author Skye @Date 2022/11/26 15:50
- */
+/** @Description WebSocket客户端 @Author Skye @Date 2022/11/26 15:50 */
 public abstract class WebSocketClient extends org.java_websocket.client.WebSocketClient {
     private static final Logger logger = SkyeLogger.getLogger();
 

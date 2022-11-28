@@ -1,8 +1,6 @@
 package exception;
 
-/**
- * @Description 自定义异常类的种类 @Author Skye @Date 2022/11/25 10:58
- */
+/** @Description 自定义异常类的种类 @Author Skye @Date 2022/11/25 10:58 */
 public enum SkyeUtilsExceptionType {
 
     /** 用于定义所有的将会用到的异常 */
@@ -80,9 +78,8 @@ public enum SkyeUtilsExceptionType {
     WebSocketClientParamErrorException("WebSocket客户端参数不能为为空", 10063),
     WebSocketServerParamErrorException("WebSocket服务端参数不能为为空", 10064),
     CanNotFindClassException("找不到对应的数据类型", 10065),
-    ParameterClassNotCorrespondException("数据类型不匹配错误", 10066),
-    StaticMethodCallErrorException("静态方法调用错误", 10067),
-    ObjectMethodCallErrorException("对象方法调用错误", 10068),
+    RemoteCallClientNotExistException("远程调用平台不存在", 10066),
+    RemoteMethodCallErrorException("远程方法调用错误", 10067),
     ;
 
     private final SkyeUtilsException exception;

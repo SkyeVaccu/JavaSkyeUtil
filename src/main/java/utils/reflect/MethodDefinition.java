@@ -20,4 +20,6 @@ public class MethodDefinition implements Serializable {
     private List<String> parameterList;
     // 返回值类型的全类名
     private String returnClass;
+    // 该方法是否是静态方法
+    private boolean isStatic;
 }
