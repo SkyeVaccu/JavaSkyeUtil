@@ -80,6 +80,13 @@ public class RemoteProxy implements InvocationHandler {
         }
     }
 
+    /**
+     * 创建对应的接口的代理对象
+     *
+     * @param interfaceClass 接口类对象
+     * @param <T> 接口类
+     * @return 代理对象T
+     */
     public <T> T createProxyInstance(Class<T> interfaceClass) {
         return (T)
                 Proxy.newProxyInstance(
