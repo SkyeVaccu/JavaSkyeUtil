@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /** @Description 反射工具类 @Author Skye @Date 2022/11/27 17:32 */
 public class ReflectUtil {
@@ -29,6 +30,29 @@ public class ReflectUtil {
         // 获得返回值类型
         String returnClassName = method.getReturnType().getName();
         return new MethodDefinition(className, methodClassName, list, returnClassName);
+    }
+
+    /**
+     * 从methodDefinition具体化为对应的方法对象
+     *
+     * @param methodDefinition 方法定义对象
+     * @return 方法对象
+     */
+    public static Method specificMethod(MethodDefinition methodDefinition) {
+        try {
+            Class<?> aClass = Class.forName(methodDefinition.getClassName());
+            List<Class<?>> parameterClassList =
+                    methodDefinition.getParameterList().stream()
+                            .map(ReflectUtil::getDataClassByName)
+                            .collect(Collectors.toList());
+            return aClass.getMethod(
+                    methodDefinition.getMethodName(), parameterClassList.toArray(Class[]::new));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw SkyeUtilsExceptionFactory.createException(
+                    SkyeUtilsExceptionType.CanNotFindClassException);
+        }
     }
 
     /**
