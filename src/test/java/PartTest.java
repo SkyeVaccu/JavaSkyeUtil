@@ -24,15 +24,7 @@ public class PartTest {
             Class<?> aClass = Class.forName(methodDefinition.getClassName());
             List<Class<?>> parameterClassList =
                     methodDefinition.getParameterList().stream()
-                            .map(
-                                    s -> {
-                                        try {
-                                            return Class.forName(s);
-                                        } catch (ClassNotFoundException e) {
-                                            e.printStackTrace();
-                                            return null;
-                                        }
-                                    })
+                            .map(ReflectUtil::getDataClassByName)
                             .collect(Collectors.toList());
             Method method =
                     aClass.getMethod(

@@ -1,5 +1,8 @@
 package utils.reflect;
 
+import exception.SkyeUtilsExceptionFactory;
+import exception.SkyeUtilsExceptionType;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -26,5 +29,42 @@ public class ReflectUtil {
         // 获得返回值类型
         String returnClassName = method.getReturnType().getName();
         return new MethodDefinition(className, methodClassName, list, returnClassName);
+    }
+
+    /**
+     * 根据类名，获得对应的数据对象类型
+     *
+     * @param dataClassName 获得数据的类对象通过数据的类名
+     * @return 返回对应的类对象
+     */
+    public static Class<?> getDataClassByName(String dataClassName) {
+        switch (dataClassName) {
+            case "int":
+                return int.class;
+            case "short":
+                return short.class;
+            case "long":
+                return long.class;
+            case "float":
+                return float.class;
+            case "double":
+                return double.class;
+            case "byte":
+                return byte.class;
+            case "char":
+                return char.class;
+            case "String":
+                return String.class;
+            case "boolean":
+                return boolean.class;
+            default:
+                try {
+                    return Class.forName(dataClassName);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                    throw SkyeUtilsExceptionFactory.createException(
+                            SkyeUtilsExceptionType.CanNotFindClassException);
+                }
+        }
     }
 }

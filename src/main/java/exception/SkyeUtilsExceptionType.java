@@ -1,8 +1,6 @@
 package exception;
 
-/**
- * @Description 自定义异常类的种类 @Author Skye @Date 2022/11/25 10:58
- */
+/** @Description 自定义异常类的种类 @Author Skye @Date 2022/11/25 10:58 */
 public enum SkyeUtilsExceptionType {
 
     /** 用于定义所有的将会用到的异常 */
@@ -79,6 +77,7 @@ public enum SkyeUtilsExceptionType {
     WebSocketConnectionCloseException("WebSocket连接已关闭", 10062),
     WebSocketClientParamErrorException("WebSocket客户端参数不能为为空", 10063),
     WebSocketServerParamErrorException("WebSocket服务端参数不能为为空", 10064),
+    CanNotFindClassException("找不到对应的数据类型", 10065),
     ;
 
     private final SkyeUtilsException exception;
