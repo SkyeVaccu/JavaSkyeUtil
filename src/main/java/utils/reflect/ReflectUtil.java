@@ -4,12 +4,15 @@ import exception.SkyeUtilsExceptionFactory;
 import exception.SkyeUtilsExceptionType;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/** @Description 反射工具类 @Author Skye @Date 2022/11/27 17:32 */
+/**
+ * @Description 反射工具类 @Author Skye @Date 2022/11/27 17:32
+ */
 public class ReflectUtil {
 
     /**
@@ -38,15 +41,21 @@ public class ReflectUtil {
      * @param methodDefinition 方法定义对象
      * @return 方法对象
      */
-    public static Method specificMethod(MethodDefinition methodDefinition) {
+    public static <T extends CallMethod> T specificMethod(MethodDefinition methodDefinition) {
         try {
             Class<?> aClass = Class.forName(methodDefinition.getClassName());
             List<Class<?>> parameterClassList =
                     methodDefinition.getParameterList().stream()
                             .map(ReflectUtil::getDataClassByName)
                             .collect(Collectors.toList());
-            return aClass.getMethod(
-                    methodDefinition.getMethodName(), parameterClassList.toArray(Class[]::new));
+            Method method =
+                    aClass.getMethod(
+                            methodDefinition.getMethodName(),
+                            parameterClassList.toArray(Class[]::new));
+            // 根据是否是静态对象，返回对应的方法
+            return Modifier.isStatic(method.getModifiers())
+                    ? (T) new CallStaticMethod(method)
+                    : (T) new CallObjectMethod(method);
         } catch (Exception e) {
             e.printStackTrace();
             throw SkyeUtilsExceptionFactory.createException(
