@@ -1,6 +1,8 @@
 package exception;
 
-/** @Description 自定义异常类的种类 @Author Skye @Date 2022/11/25 10:58 */
+/**
+ * @Description 自定义异常类的种类 @Author Skye @Date 2022/11/25 10:58
+ */
 public enum SkyeUtilsExceptionType {
 
     /** 用于定义所有的将会用到的异常 */
@@ -80,6 +82,8 @@ public enum SkyeUtilsExceptionType {
     CanNotFindClassException("找不到对应的数据类型", 10065),
     RemoteCallClientNotExistException("远程调用平台不存在", 10066),
     RemoteMethodCallErrorException("远程方法调用错误", 10067),
+    CanNotFindEnumConstantException("无法找到枚举常量", 10068),
+    ConvertPrimitiveDataErrorException("转换基本数据类型错误", 10069),
     ;
 
     private final SkyeUtilsException exception;

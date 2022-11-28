@@ -344,6 +344,7 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
                                     }
                                 }
                             } catch (Exception e) {
+                                e.printStackTrace();
                                 throw SkyeUtilsExceptionFactory.createException(
                                         SkyeUtilsExceptionType
                                                 .WebSocketServerMessageEventException);

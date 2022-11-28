@@ -6,13 +6,14 @@ import utils.websocket.client.WebSocketClient;
 import utils.websocket.server.WebSocketConnection;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/** @Description 反射工具类 @Author Skye @Date 2022/11/27 17:32 */
+/**
+ * @Description 反射工具类 @Author Skye @Date 2022/11/27 17:32
+ */
 public class ReflectUtil {
 
     /**
@@ -32,10 +33,7 @@ public class ReflectUtil {
         }
         // 获得返回值类型
         String returnClassName = method.getReturnType().getName();
-        // 是否是静态方法
-        boolean isStaticMethod = isStaticMethod(method);
-        return new MethodDefinition(
-                className, methodClassName, list, returnClassName, isStaticMethod);
+        return new MethodDefinition(className, methodClassName, list, returnClassName);
     }
 
     /**
@@ -60,16 +58,6 @@ public class ReflectUtil {
             throw SkyeUtilsExceptionFactory.createException(
                     SkyeUtilsExceptionType.CanNotFindClassException);
         }
-    }
-
-    /**
-     * 判断是否是静态方法
-     *
-     * @param method 方法对象
-     * @return 结果
-     */
-    public static boolean isStaticMethod(Method method) {
-        return Modifier.isStatic(method.getModifiers());
     }
 
     /**
@@ -114,14 +102,17 @@ public class ReflectUtil {
      *
      * @param webSocketClient 用于发送的webSocketClient平台
      * @param targetInterface 代理接口
+     * @param callTargetKey 调用对象key
      * @param <T> 接口类型
      * @return 代理对象
      */
     public static <T> T createRemoteProxy(
-            WebSocketClient webSocketClient, Class<T> targetInterface) {
-        return new RemoteProxy()
-                .setWebSocketClient(webSocketClient)
-                .createProxyInstance(targetInterface);
+            WebSocketClient webSocketClient, Class<T> targetInterface, String callTargetKey) {
+        return RemoteProxy.createProxyInstance(
+                targetInterface,
+                new RemoteProxy()
+                        .setWebSocketClient(webSocketClient)
+                        .setCallTargetKey(callTargetKey));
     }
 
     /**
@@ -129,25 +120,18 @@ public class ReflectUtil {
      *
      * @param webSocketConnection 用于发送的webSocketConnection
      * @param targetInterface 代理接口
+     * @param callTargetKey 调用对象key
      * @param <T> 接口类型
      * @return 代理对象
      */
     public static <T> T createRemoteProxy(
-            WebSocketConnection webSocketConnection, Class<T> targetInterface) {
-        return new RemoteProxy()
-                .setWebSocketConnection(webSocketConnection)
-                .createProxyInstance(targetInterface);
-    }
-
-    /**
-     * 处理对应的参数，根据目标方法，对传入的参数进行处理，args已经是经过序列化和反序列化的，其可能存在反序列化错误的情况，尤其是当出现枚举对象等
-     * 其会反序列化成String类型，对于这种情况，应当进行处理
-     *
-     * @param method 目标方法
-     * @param args 调用的参数
-     * @return 经过处理的参数
-     */
-    public static Object[] handleMethodParameter(Method method, Object[] args) {
-        return args;
+            WebSocketConnection webSocketConnection,
+            Class<T> targetInterface,
+            String callTargetKey) {
+        return RemoteProxy.createProxyInstance(
+                targetInterface,
+                new RemoteProxy()
+                        .setWebSocketConnection(webSocketConnection)
+                        .setCallTargetKey(callTargetKey));
     }
 }

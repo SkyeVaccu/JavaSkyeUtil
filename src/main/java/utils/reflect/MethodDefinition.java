@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.List;
 
-/** @Description 将方法对象抽象成便于传输的数据的形式 @Author Skye @Date 2022/11/28 10:22 */
+/**
+ * @Description 将方法对象抽象成便于传输的数据的形式 @Author Skye @Date 2022/11/28 10:22
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +22,4 @@ public class MethodDefinition implements Serializable {
     private List<String> parameterList;
     // 返回值类型的全类名
     private String returnClass;
-    // 该方法是否是静态方法
-    private boolean isStatic;
 }
