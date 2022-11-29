@@ -49,7 +49,7 @@ public class RmiCalleeClientReceiver extends WebSocketClientReceiver implements 
             // 调用目标方法
             Object result = RmiUtil.callRemoteMethodRequestWrapper(remoteMethodRequestWrapper);
             // 如果方法具有返回值，则进行返回
-            if (!remoteMethodRequestWrapper.getMethodDefinition().getReturnClass().equals("void")) {
+            if (!"void".equals(remoteMethodRequestWrapper.getMethodDefinition().getReturnClass())) {
                 // 生成返回的请求包
                 WebSocketPackage responseWebSocketPackage =
                         new WebSocketPackage()
