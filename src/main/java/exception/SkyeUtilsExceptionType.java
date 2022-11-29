@@ -1,8 +1,6 @@
 package exception;
 
-/**
- * @Description 自定义异常类的种类 @Author Skye @Date 2022/11/25 10:58
- */
+/** @Description 自定义异常类的种类 @Author Skye @Date 2022/11/25 10:58 */
 public enum SkyeUtilsExceptionType {
 
     /** 用于定义所有的将会用到的异常 */
@@ -84,6 +82,8 @@ public enum SkyeUtilsExceptionType {
     RemoteMethodCallErrorException("远程方法调用错误", 10067),
     CanNotFindEnumConstantException("无法找到枚举常量", 10068),
     ConvertPrimitiveDataErrorException("转换基本数据类型错误", 10069),
+    RMIFutureTaskNotExistException("RMI结果获取FutureTask不存在", 10070),
+    RMIRequestWrapperNotExistException("RMI结果获取请求包不存在", 10071),
     ;
 
     private final SkyeUtilsException exception;

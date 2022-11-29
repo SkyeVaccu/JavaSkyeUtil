@@ -9,9 +9,7 @@ import utils.reflect.MethodDefinition;
 import utils.reflect.ReflectUtil;
 import utils.reflect.RemoteMethodRequestWrapper;
 
-/**
- * @Description Rmi 工具类，完成对于数据包的解包以及调用目标方法，获得返回方法等 @Author Skye @Date 2022/11/28 21:28
- */
+/** @Description Rmi 工具类，完成对于数据包的解包以及调用目标方法，获得返回方法等 @Author Skye @Date 2022/11/28 21:28 */
 public class RmiUtil {
     private static final Logger logger = SkyeLogger.getLogger();
 
@@ -32,11 +30,12 @@ public class RmiUtil {
             // 获得其所在接口的Class
             Class<?> aClass = Class.forName(methodDefinition.getClassName());
             // 获得调用对象Key，从注册表中找到对应的obj
-            Object callTarget =
-                    CallTargetRegistry.find(remoteMethodRequestWrapper.getCallTargetKey(), aClass);
+            Object callTargetObject =
+                    CallTargetRegistry.find(
+                            remoteMethodRequestWrapper.getCallTargetObjectKey(), aClass);
             logger.debug("执行远程调用----" + methodDefinition.getMethodName());
             // 调用目标的方法,获得返回值
-            return callMethod.call(callTarget, args);
+            return callMethod.call(callTargetObject, args);
         } catch (Exception e) {
             e.printStackTrace();
             throw SkyeUtilsExceptionFactory.createException(

@@ -1,6 +1,9 @@
 package utils.websocket.rmi.client;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import exception.SkyeUtilsExceptionFactory;
+import exception.SkyeUtilsExceptionType;
+import utils.AsyncUtil;
 import utils.SerializeUtil;
 import utils.reflect.RemoteMethodResponseWrapper;
 import utils.websocket.WebSocketController;
@@ -13,9 +16,7 @@ import utils.websocket.rmi.RmiCallerReceiver;
 
 import java.util.Map;
 
-/**
- * @Description 客户端方法调用者，当当前客户端作为调用者时，其会接收到调用方法的返回值 @Author Skye @Date 2022/11/28 16:05
- */
+/** @Description 客户端方法调用者，当当前客户端作为调用者时，其会接收到调用方法的返回值 @Author Skye @Date 2022/11/28 16:05 */
 @WebSocketController(loop = "RemoteCallMethod", subject = "RemoteCallMethod")
 public class RmiCallerClientReceiver extends WebSocketClientReceiver implements RmiCallerReceiver {
 
@@ -32,17 +33,32 @@ public class RmiCallerClientReceiver extends WebSocketClientReceiver implements 
         // 获得该结果响应的数据包
         String responseId = webSocketPackage.getResponseId();
         // 获得需要调用的FutureTask
-        ModifiableFutureTask<Object> modifiableFutureTask = CallMethodRegistry.get(responseId);
+        ModifiableFutureTask<Object> modifiableFutureTask =
+                CallMethodRegistry.getModifiableFutureTask(responseId);
         // 获得响应对象
         RemoteMethodResponseWrapper remoteMethodResponseWrapper =
                 SerializeUtil.convertMapToBeanByClass(
                         (Map<String, Object>) webSocketPackage.getContent(),
                         new TypeReference<>() {});
-        // TODO 需要对返回值进行反序列化
+        // 获得返回值
         Object returnValue = remoteMethodResponseWrapper.getReturnValue();
-        // 设置对应的result
-        modifiableFutureTask.setResult(returnValue);
-        // TODO 将任务提交到线程池执行，使得可以返回值
-        new Thread(modifiableFutureTask).start();
+        // 获得返回值的类型名
+        String returnClassName =
+                CallMethodRegistry.getRemoteMethodRequestWrapper(responseId)
+                        .getMethodDefinition()
+                        .getReturnClass();
+        try {
+            Object conversionReturnValue =
+                    SerializeUtil.convertJsonToBeanByClass(
+                            SerializeUtil.convertObjectToJson(returnValue),
+                            Class.forName(returnClassName));
+            // 设置对应的result
+            modifiableFutureTask.setResult(conversionReturnValue);
+            // 将任务提交给线程池
+            AsyncUtil.submitTask(modifiableFutureTask);
+        } catch (Exception e) {
+            throw SkyeUtilsExceptionFactory.createException(
+                    SkyeUtilsExceptionType.CanNotFindClassException);
+        }
     }
 }

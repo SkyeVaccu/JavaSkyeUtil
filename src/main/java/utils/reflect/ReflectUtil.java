@@ -11,9 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @Description 反射工具类 @Author Skye @Date 2022/11/27 17:32
- */
+/** @Description 反射工具类 @Author Skye @Date 2022/11/27 17:32 */
 public class ReflectUtil {
 
     /**
@@ -112,7 +110,7 @@ public class ReflectUtil {
                 targetInterface,
                 new RemoteProxy()
                         .setWebSocketClient(webSocketClient)
-                        .setCallTargetKey(callTargetKey));
+                        .setCallTargetObjectKey(callTargetKey));
     }
 
     /**
@@ -132,6 +130,6 @@ public class ReflectUtil {
                 targetInterface,
                 new RemoteProxy()
                         .setWebSocketConnection(webSocketConnection)
-                        .setCallTargetKey(callTargetKey));
+                        .setCallTargetObjectKey(callTargetKey));
     }
 }

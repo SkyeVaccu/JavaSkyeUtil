@@ -32,7 +32,9 @@ public class RemoteProxy implements InvocationHandler {
     // websocketConnection对象，说明当前是webSocket服务器
     private WebSocketConnection webSocketConnection;
     // 服务端调用对象的键，如果是静态方法，则这个值应当为null
-    private String callTargetKey;
+    private String callTargetObjectKey;
+    // 指定需要响应的服务端的key，如果想要触发所有的服务终端，这个值应该为空或者null
+    private String callTargetEndKey;
 
     /**
      * 将对应的数据包应当进行封装，然后通过WebSocket发送出去，然后阻塞等待数据返回，或者是通过回调的方式获得数据
@@ -58,7 +60,10 @@ public class RemoteProxy implements InvocationHandler {
                             // 设置数据包的内容
                             .setContent(
                                     new RemoteMethodRequestWrapper(
-                                            methodDefinition, args, callTargetKey))
+                                            methodDefinition,
+                                            args,
+                                            callTargetObjectKey,
+                                            callTargetEndKey))
                             // 设置发送时间
                             .setTime(System.currentTimeMillis())
                             // 设置回路为远程方法调用
