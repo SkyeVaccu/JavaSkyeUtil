@@ -11,8 +11,8 @@
 
 ```java
 Logger logger=SkyeLogger.getLogger();
-        logger.info("this is a log");
-```  
+logger.info("this is a log");
+```
 
 ##### 缓存工具
 
@@ -22,9 +22,9 @@ Logger logger=SkyeLogger.getLogger();
 //存入内容
 CacheUtil.put("key","value");
 //移除内容
-        CacheUtil.remove("key");
+CacheUtil.remove("key");
 //指定放入内容的时间，到达事件后将会被删除
-        CacheUtil.put("key1","value1",TimeUnit.SECONDS,3);
+CacheUtil.put("key1","value1",TimeUnit.SECONDS,3);
 ```
 
 ##### 文件工具
@@ -55,7 +55,7 @@ HttpResponse<String> response=HttpUtil.getRequest(
         System.out.println(response);
 
 //发起一个POST请求
-        HttpResponse<String> response=HttpUtil.postRequest(
+HttpResponse<String> response=HttpUtil.postRequest(
         "https://www.baidu.com",
         MapUtil.of("searchContent","testSearch"));
         System.out.println(response);
@@ -67,9 +67,9 @@ HttpResponse<String> response=HttpUtil.getRequest(
 
 ```java
 MapUtil.of("key","value");
-        MapUtil.of("key1","value1","key2","value2");
-        MapUtil.of("key1","value1","key2","value2","key3","value3");
-        MapUtil.of("key1","value1","key2","value2","key3","value3","key4","value4");
+MapUtil.of("key1","value1","key2","value2");
+MapUtil.of("key1","value1","key2","value2","key3","value3");
+MapUtil.of("key1","value1","key2","value2","key3","value3","key4","value4");
 ```
 
 判断一系列的key是否在Map中
@@ -109,13 +109,11 @@ Table<String, String,int>table=new Table();
 
 ```java
 //初始化一些待定的时间格式
- DateTimeUtil.initGlobalDateFormatString(
-         "yyyy-MM-dd","yyyy-MM-dd hh:mm:ss","yyyy-MM-dd hh");
-
+DateTimeUtil.initGlobalDateFormatString("yyyy-MM-dd","yyyy-MM-dd hh:mm:ss","yyyy-MM-dd hh");
 //将时间从字符串转换成Date对象，如果没有转入对应的格式字符串会调用默认的
-         DateTimeUtil.convertStringToDate("2022-11-27 10");
+DateTimeUtil.convertStringToDate("2022-11-27 10");
 //将时间转换为字符串，如果没有转入对应的格式字符串会调用默认的
-         DateTimeUtil.convertDateToString(new Date());
+DateTimeUtil.convertDateToString(new Date());
 ```
 
 ##### 时间判断器
@@ -126,10 +124,10 @@ Table<String, String,int>table=new Table();
 //创建一个时间表达式
 DateFilter dateFilter1=new DateFilter("this.year==2022 && this.month==11 && this.day==27");
 //对时间进行匹配
-        dateFilter1.match(new Date());
+dateFilter1.match(new Date());
 
-        DateFilter dateFilter3=new DateFilter("this.year==2023 || (this.month==11 && this.day==27)");
-        dateFilter3.match(new Date());
+DateFilter dateFilter3=new DateFilter("this.year==2023 || (this.month==11 && this.day==27)");
+dateFilter3.match(new Date());
 ```  
 
 ##### 图像处理工具
@@ -139,7 +137,7 @@ DateFilter dateFilter1=new DateFilter("this.year==2022 && this.month==11 && this
 ImageUtil.isImage("C:/test.png");
 
 //将路径修改为jpg结尾
-        ImageUtil.convertImagePathToJpgSuffix("C:/test.png");
+ImageUtil.convertImagePathToJpgSuffix("C:/test.png");
 ```
 
 ##### 图像压缩器
@@ -153,8 +151,8 @@ File file=new File("C:/test.png");
         .setFile(file)
         .setNewPath("C:/test1.png")
         .compress();
-        File file1=new File("C:/test1.png");
-        assert file1.length()<file.length();
+File file1=new File("C:/test1.png");
+assert file1.length()<file.length();
 ```  
 
 ##### jwt工具
@@ -163,9 +161,14 @@ File file=new File("C:/test.png");
 
 ```java
 //编码jwt
-String encode=JwtUtil.encode(EncodeOrigin.getDefaultEncodeOrigin(),MapUtil.of("key","value"));
+String encode=JwtUtil.encode(
+        EncodeOrigin.getDefaultEncodeOrigin(),
+        MapUtil.of("key","value"));
 //解码jwt
-DecodeInfo decodeInfo=JwtUtil.decode(encode,DecodeOrigin.getDefaultEncodeOrigin(),Map.of("key",String.class));
+DecodeInfo decodeInfo=JwtUtil.decode(
+        encode,
+        DecodeOrigin.getDefaultEncodeOrigin(),
+        Map.of("key",String.class));
 ```
 ##### 邮件工具
 ```java
@@ -266,7 +269,7 @@ AsyncUtil.submitTaskPeriod(
 ##### WebSocket工具
 创建一个服务端
 ```java
- WebSocketServer webSocketServer =new WebSocketServer.WebSocketServerBuilder()
+WebSocketServer webSocketServer =new WebSocketServer.WebSocketServerBuilder()
                         .setHost("127.0.0.1")
                         .setPort("8888")
                         .build();
