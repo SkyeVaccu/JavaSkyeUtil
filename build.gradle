@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenLocal()
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+    mavenCentral()
+    jcenter()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
+    implementation 'com.auth0:java-jwt:3.4.0'
+    implementation 'net.coobird:thumbnailator:0.4.8'
+    implementation 'org.projectlombok:lombok:1.18.22'
+    implementation 'org.slf4j:slf4j-api:1.7.7'
+    implementation 'ch.qos.logback:logback-core:1.1.7'
+    implementation 'ch.qos.logback:logback-access:1.1.7'
+    implementation 'ch.qos.logback:logback-classic:1.1.7'
+    implementation 'com.sun.mail:javax.mail:1.6.2'
+    implementation 'org.java-websocket:Java-WebSocket:1.5.3'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'com.tencentcloudapi:tencentcloud-sdk-java:3.1.287'
+
+    implementation 'junit:junit:4.13.2'
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+}
+
+group = 'ltd.vaccum'
+version = '0.1'
+description = 'SkyeUtils'
+java.sourceCompatibility = JavaVersion.VERSION_11
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
