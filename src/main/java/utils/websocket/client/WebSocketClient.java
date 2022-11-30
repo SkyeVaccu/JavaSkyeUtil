@@ -4,6 +4,7 @@ import exception.SkyeUtilsExceptionFactory;
 import exception.SkyeUtilsExceptionType;
 import log.SkyeLogger;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.ObjectUtils;
@@ -27,9 +28,13 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-/** @Description WebSocket客户端 @Author Skye @Date 2022/11/26 15:50 */
+/**
+ * @Description WebSocket客户端 @Author Skye @Date 2022/11/26 15:50
+ */
 public abstract class WebSocketClient extends org.java_websocket.client.WebSocketClient {
     private static final Logger logger = SkyeLogger.getLogger();
+    // 用于rmi远程被调者的key
+    public static final String RMI_CALLEE_END_KEY = "rmiCalleeEndKey";
 
     // websocket 接收者table，通过loop,subject确定接收器
     protected final Table<String, String, Set<WebSocketClientReceiver>>
@@ -37,8 +42,9 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
     // websocket 发送者table，通过loop,subject确定发送器
     protected final Table<String, String, Set<WebSocketClientSender>>
             WEB_SOCKET_CLIENT_SENDER_LIST_TABLE = new Table<>();
+
     // 未响应的ping命令次数
-    public int nonResponseCount = 0;
+    protected int nonResponseCount = 0;
     // 心跳周期时间
     @Setter(AccessLevel.PRIVATE)
     private int heartbeatPeriod;
@@ -51,6 +57,10 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
     // 检查活动的非活跃时间
     @Setter(AccessLevel.PRIVATE)
     private int notResponseThreshold;
+    // 连接时的传入头部参数
+    @Setter(AccessLevel.PRIVATE)
+    @Getter
+    private Map<String, String> openParamsMap;
 
     /**
      * 注册对应的操作器
@@ -108,12 +118,12 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
     @Override
     public void connect() {
         super.connect();
-        logger.debug("连接WebSocket服务器");
+        logger.info("连接WebSocket服务器");
         // 每隔一段时间检查一下，如果服务器超过阈值没有返回响应的Pong命令，则进行重连
         AsyncUtil.submitTaskPeriod(
                 () -> {
                     if (nonResponseCount > notResponseThreshold) {
-                        logger.error("尝试重新连接WebSocket服务器");
+                        logger.debug("尝试重新连接WebSocket服务器");
                         this.connect();
                     }
                 },
@@ -166,7 +176,7 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
                         new WebSocketClient(URI.create("ws://" + host + ":" + port)) {
                             @Override
                             public void onOpen(ServerHandshake handshakedata) {
-                                logger.debug("打开与服务器连接");
+                                logger.info("打开与服务器连接");
                                 // 调用打开监听器
                                 if (ObjectUtils.isNotEmpty(openListener)) {
                                     openListener.accept(handshakedata);
@@ -175,7 +185,7 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
 
                             @Override
                             public void onMessage(String message) {
-                                logger.debug("接收与服务器信息");
+                                logger.info("接收与服务器信息");
                                 // 调用信息监听器
                                 if (ObjectUtils.isNotEmpty(messageListener)) {
                                     messageListener.accept(message);
@@ -199,7 +209,7 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
 
                             @Override
                             public void onClose(int code, String reason, boolean remote) {
-                                logger.debug("关闭与服务器连接");
+                                logger.info("关闭与服务器连接");
                                 // 调用关闭监听器
                                 if (ObjectUtils.isNotEmpty(closeListener)) {
                                     closeListener.accept(reason);
@@ -208,7 +218,7 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
 
                             @Override
                             public void onError(Exception ex) {
-                                logger.debug("与服务器连接发送错误");
+                                logger.info("与服务器连接发送错误");
                                 // 调用错误监听器
                                 if (ObjectUtils.isNotEmpty(errorListener)) {
                                     errorListener.accept(ex);
@@ -217,7 +227,7 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
 
                             @Override
                             public void onWebsocketPing(WebSocket conn, Framedata f) {
-                                logger.debug("WebSocket客户端发送Ping——" + conn.toString());
+                                logger.info("WebSocket客户端发送Ping——" + conn.toString());
                                 // 发送心跳包
                                 super.onWebsocketPing(conn, f);
                                 // 未响应数量+1
@@ -226,7 +236,7 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
 
                             @Override
                             public void onWebsocketPong(WebSocket conn, Framedata f) {
-                                logger.debug("WebSocket客户端接收Pong——" + conn.toString());
+                                logger.info("WebSocket客户端接收Pong——" + conn.toString());
                                 AsyncUtil.submitTaskDelayed(
                                         () -> {
                                             // 发送心跳包
@@ -247,6 +257,8 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
                 webSocketClient.setCheckDelayTime(checkDelayTime);
                 webSocketClient.setCheckPeriodTime(checkPeriodTime);
                 webSocketClient.setNotResponseThreshold(notResponseThreshold);
+                // 设置初始化参数
+                webSocketClient.setOpenParamsMap(openParamsMap);
                 // 返回客户端对象
                 return webSocketClient;
             } else {

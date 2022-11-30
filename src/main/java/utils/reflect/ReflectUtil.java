@@ -2,6 +2,7 @@ package utils.reflect;
 
 import exception.SkyeUtilsExceptionFactory;
 import exception.SkyeUtilsExceptionType;
+import utils.SerializeUtil;
 import utils.websocket.client.WebSocketClient;
 import utils.websocket.server.WebSocketConnection;
 
@@ -11,7 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/** @Description 反射工具类 @Author Skye @Date 2022/11/27 17:32 */
+/**
+ * @Description 反射工具类 @Author Skye @Date 2022/11/27 17:32
+ */
 public class ReflectUtil {
 
     /**
@@ -96,21 +99,90 @@ public class ReflectUtil {
     }
 
     /**
+     * 处理数据类型的矛盾
+     *
+     * @param targetType 目标数据类型
+     * @param originValue 传入的数据值
+     * @return 转换后符合目标的数据
+     */
+    public static Object handleDataConflict(Class<?> targetType, Object originValue) {
+        return handleDataConflict(targetType.getName(), originValue);
+    }
+
+    /**
+     * 处理数据类型的矛盾
+     *
+     * @param className 目标数据类名
+     * @param originValue 传入的数据值
+     * @return 转换后符合目标的数据
+     */
+    public static Object handleDataConflict(String className, Object originValue) {
+        try {
+            switch (className) {
+                case "int":
+                    return Integer.valueOf(originValue.toString());
+                case "float":
+                    return Float.valueOf(originValue.toString());
+                case "double":
+                    return Double.valueOf(originValue.toString());
+                case "String":
+                    return originValue.toString();
+                case "short":
+                    return Short.valueOf(originValue.toString());
+                case "byte":
+                    return Byte.valueOf(originValue.toString());
+                case "char":
+                    return originValue;
+                case "boolean":
+                    return Boolean.valueOf(originValue.toString());
+                default:
+                    // 获取准确的数据类型
+                    Class<?> targetType = Class.forName(className);
+                    // 如果是枚举类型，找到对应的值
+                    if (targetType.isEnum()) {
+                        // 遍历所有的枚举变量
+                        for (Object enumConstant : targetType.getEnumConstants()) {
+                            if (enumConstant.toString().equals(originValue.toString())) {
+                                return enumConstant;
+                            }
+                        }
+                        // 找不到则抛出异常
+                        throw SkyeUtilsExceptionFactory.createException(
+                                SkyeUtilsExceptionType.CanNotFindEnumConstantException);
+                    } else {
+                        return SerializeUtil.convertJsonToBeanByClass(
+                                SerializeUtil.convertObjectToJson(originValue), targetType);
+                    }
+            }
+        } catch (Exception e) {
+            throw SkyeUtilsExceptionFactory.createException(
+                    SkyeUtilsExceptionType.CanNotFindClassException);
+        }
+    }
+
+    private static void handlePrimitiveDataConflict() {}
+
+    /**
      * 生成目标接口的代理对象
      *
      * @param webSocketClient 用于发送的webSocketClient平台
      * @param targetInterface 代理接口
-     * @param callTargetKey 调用对象key
+     * @param callTargetObjectKey 调用对象key
+     * @param callTargetEndKey 调用服务端的key
      * @param <T> 接口类型
      * @return 代理对象
      */
     public static <T> T createRemoteProxy(
-            WebSocketClient webSocketClient, Class<T> targetInterface, String callTargetKey) {
+            WebSocketClient webSocketClient,
+            Class<T> targetInterface,
+            String callTargetObjectKey,
+            String callTargetEndKey) {
         return RemoteProxy.createProxyInstance(
                 targetInterface,
                 new RemoteProxy()
                         .setWebSocketClient(webSocketClient)
-                        .setCallTargetObjectKey(callTargetKey));
+                        .setCallTargetObjectKey(callTargetObjectKey)
+                        .setCallTargetEndKey(callTargetEndKey));
     }
 
     /**
@@ -118,18 +190,21 @@ public class ReflectUtil {
      *
      * @param webSocketConnection 用于发送的webSocketConnection
      * @param targetInterface 代理接口
-     * @param callTargetKey 调用对象key
+     * @param callTargetObjectKey 调用对象key
+     * @param callTargetEndKey 调用服务端的key
      * @param <T> 接口类型
      * @return 代理对象
      */
     public static <T> T createRemoteProxy(
             WebSocketConnection webSocketConnection,
             Class<T> targetInterface,
-            String callTargetKey) {
+            String callTargetObjectKey,
+            String callTargetEndKey) {
         return RemoteProxy.createProxyInstance(
                 targetInterface,
                 new RemoteProxy()
                         .setWebSocketConnection(webSocketConnection)
-                        .setCallTargetObjectKey(callTargetKey));
+                        .setCallTargetObjectKey(callTargetObjectKey)
+                        .setCallTargetEndKey(callTargetEndKey));
     }
 }

@@ -9,8 +9,8 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import utils.websocket.WebSocketPackage;
 import utils.websocket.client.WebSocketClient;
-import utils.websocket.rmi.CallMethodRegistry;
 import utils.websocket.rmi.ModifiableFutureTask;
+import utils.websocket.rmi.client.CallMethodRegistry;
 import utils.websocket.server.WebSocketConnection;
 
 import java.lang.reflect.InvocationHandler;
@@ -33,7 +33,8 @@ public class RemoteProxy implements InvocationHandler {
     private WebSocketConnection webSocketConnection;
     // 服务端调用对象的键，如果是静态方法，则这个值应当为null
     private String callTargetObjectKey;
-    // 指定需要响应的服务端的key，如果想要触发所有的服务终端，这个值应该为空或者null
+    // 指定需要响应的服务端的key，如果想要触发所有的服务终端，这个值应该为空或者null，注意如果这是一个有返回值的方法，则只会获得第一个方法，
+    // 调用方太多，结果多，会导致结果的不确定性，因此会抛出future task不存在异常，因为该方法已经被响应
     private String callTargetEndKey;
 
     /**

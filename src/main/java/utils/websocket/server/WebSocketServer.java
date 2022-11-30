@@ -20,6 +20,7 @@ import utils.collection.MapUtil;
 import utils.collection.Table;
 import utils.websocket.WebSocketPackage;
 import utils.websocket.WebSocketUtil;
+import utils.websocket.rmi.server.RmiTransitServerReceiver;
 
 import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
@@ -97,7 +98,7 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
     /** 启动Websocket服务器 */
     public void start() {
         super.start();
-        logger.debug("启动WebSocket服务器");
+        logger.info("启动WebSocket服务器");
         // 启动一个任务，每隔一段时间秒删除超过时间秒没响应的连接
         AsyncUtil.submitTaskPeriod(
                 () ->
@@ -198,7 +199,7 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
                     new WebSocketServer(new InetSocketAddress(host, Integer.parseInt(port))) {
                         @Override
                         public void onOpen(WebSocket conn, ClientHandshake handshake) {
-                            logger.debug("客户端连接打开——" + conn.toString());
+                            logger.info("客户端连接打开——" + conn.toString());
                             // 调用打开监听器
                             if (ObjectUtils.isNotEmpty(openListener)) {
                                 openListener.accept(conn, handshake);
@@ -278,7 +279,7 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
                         public void onClose(
                                 WebSocket conn, int code, String reason, boolean remote) {
                             try {
-                                logger.debug("客户端连接关闭——" + conn.toString());
+                                logger.info("客户端连接关闭——" + conn.toString());
                                 // 调用关闭监听器
                                 if (ObjectUtils.isNotEmpty(closeListener)) {
                                     closeListener.accept(conn, reason);
@@ -307,7 +308,7 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
                         @Override
                         public void onMessage(WebSocket conn, String message) {
                             try {
-                                logger.debug("客户端连接接收信息——" + conn.toString());
+                                logger.info("客户端连接接收信息——" + conn.toString());
                                 // 调用信息监听器
                                 if (ObjectUtils.isNotEmpty(messageListener)) {
                                     messageListener.accept(conn, message);
@@ -354,7 +355,7 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
                         @Override
                         public void onError(WebSocket conn, Exception ex) {
                             try {
-                                logger.debug("客户端连接发生错误——" + conn.toString());
+                                logger.info("客户端连接发生错误——" + conn.toString());
                                 // 调用错误监听器
                                 if (ObjectUtils.isNotEmpty(errorListener)) {
                                     errorListener.accept(conn, ex);
@@ -383,7 +384,7 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
                         @Override
                         public void onStart() {
                             try {
-                                logger.debug("WebSocket服务器启动成功");
+                                logger.info("WebSocket服务器启动成功");
                                 // 调用启动监听器
                                 if (ObjectUtils.isNotEmpty(startListener)) {
                                     startListener.run();
@@ -396,14 +397,14 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
 
                         @Override
                         public void onWebsocketPing(WebSocket conn, Framedata f) {
-                            logger.debug("WebSocket服务器发送Ping——" + conn.toString());
+                            logger.info("WebSocket服务器发送Ping——" + conn.toString());
                             // 发送心跳包
                             super.onWebsocketPing(conn, f);
                         }
 
                         @Override
                         public void onWebsocketPong(WebSocket conn, Framedata f) {
-                            logger.debug("WebSocket服务器接收Pong——" + conn.toString());
+                            logger.info("WebSocket服务器接收Pong——" + conn.toString());
                             // 接收到pong心跳包,继续发送ping命令
                             this.onWebsocketPing(conn, new PingFrame());
                             // 更新对应的连接的更新时间
@@ -415,6 +416,8 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
             webSocketServer.setCheckDelayTime(checkDelayTime);
             webSocketServer.setCheckPeriodTime(checkPeriodTime);
             webSocketServer.setNotActiveThreshold(notActiveThreshold);
+            // 会自动注册一个RMI中转站接收器
+            webSocketServer.register(new RmiTransitServerReceiver());
             return webSocketServer;
         }
     }
