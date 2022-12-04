@@ -17,6 +17,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Description 远程代理，用于生成对于接口的代理，客户端通过调用该代理对象，能够将对于方法的调用信息打包进一个WebSocketPackage中去
@@ -102,8 +103,8 @@ public class RemoteProxy implements InvocationHandler {
                 ModifiableFutureTask<Object> modifiableFutureTask = new ModifiableFutureTask<>();
                 // 将数据包与该FutureTask进行绑定
                 CallMethodRegistry.register(webSocketPackage, modifiableFutureTask);
-                // 获得远程方法调用返回的值，这个方法会发生阻塞
-                Object result = modifiableFutureTask.get();
+                // 获得远程方法调用返回的值，这个方法会发生阻塞，默认的超时时间为3s，如果调用时间超过3s，则会抛出异常
+                Object result = modifiableFutureTask.get(3, TimeUnit.SECONDS);
                 logger.debug(
                         "远程方法返回结果---" + methodDefinition.getMethodName() + "---返回值---" + result);
                 return result;
