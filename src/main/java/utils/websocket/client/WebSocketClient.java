@@ -141,11 +141,12 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
                     if (nonResponseCount > notResponseThreshold) {
                         // 非手动关闭，则尝试进行连接
                         if (webSocketClientStatus == WebSocketClientStatus.OPEN) {
-                            logger.debug("尝试重新连接WebSocket服务器");
+                            logger.debug("尝试重新连接WebSocket客户端");
                             this.connect();
                         } else {
                             // 手动关闭的情况，则将状态设置为关闭
                             webSocketClientStatus = WebSocketClientStatus.CLOSE;
+                            logger.debug("停止WebSocketClient检查器");
                             // 通过抛出异常，来停止检查器
                             throw new RuntimeException("停止检查器");
                         }
