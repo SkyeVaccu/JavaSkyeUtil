@@ -39,10 +39,10 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
     // websocket 接收者table，通过loop,subject确定接收器，只有绑定过WebConnection才会被添加，即使这个连接已经中断
     // 因为一个操作器是单例的，其对应着多个连接，即便部分连接关闭，其也应当接收信息，当全部连接关闭时，其也不会再接收到信息被调用
     protected final Table<String, String, Set<WebSocketServerReceiver>>
-            WEB_SOCKET_SERVER_RECEIVER_LIST_TABLE = new Table<>();
+            WEB_SOCKET_SERVER_RECEIVER_SET_TABLE = new Table<>();
     // websocket 发送者table，通过loop,subject确定发送器，只有绑定过WebConnection才会被添加，即使这个连接已经中断
     protected final Table<String, String, Set<WebSocketServerSender>>
-            WEB_SOCKET_SERVER_SENDER_LIST_TABLE = new Table<>();
+            WEB_SOCKET_SERVER_SENDER_SET_TABLE = new Table<>();
     // 注册的所有的websocket Server operator，可能是绑定完成的，也可能是没有完成的
     protected final List<WebSocketServerOperator> WEB_SOCKET_SERVER_OPERATOR_LIST =
             new ArrayList<>();
@@ -239,11 +239,11 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
                                     if (!StringUtils.isAnyEmpty(loop, subject)) {
                                         // 添加到对应的表格中去
                                         Set<WebSocketServerReceiver> webSocketServerReceiverSet =
-                                                WEB_SOCKET_SERVER_RECEIVER_LIST_TABLE.get(
+                                                WEB_SOCKET_SERVER_RECEIVER_SET_TABLE.get(
                                                         loop, subject);
                                         if (null == webSocketServerReceiverSet) {
                                             webSocketServerReceiverSet = new HashSet<>();
-                                            WEB_SOCKET_SERVER_RECEIVER_LIST_TABLE.put(
+                                            WEB_SOCKET_SERVER_RECEIVER_SET_TABLE.put(
                                                     loop, subject, webSocketServerReceiverSet);
                                         }
                                         webSocketServerReceiverSet.add(webSocketServerReceiver);
@@ -262,11 +262,11 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
                                     if (!StringUtils.isAnyEmpty(loop, subject)) {
                                         // 添加到对应的表格中去
                                         Set<WebSocketServerSender> webSocketServerSenderSet =
-                                                WEB_SOCKET_SERVER_SENDER_LIST_TABLE.get(
+                                                WEB_SOCKET_SERVER_SENDER_SET_TABLE.get(
                                                         loop, subject);
                                         if (null == webSocketServerSenderSet) {
                                             webSocketServerSenderSet = new HashSet<>();
-                                            WEB_SOCKET_SERVER_SENDER_LIST_TABLE.put(
+                                            WEB_SOCKET_SERVER_SENDER_SET_TABLE.put(
                                                     loop, subject, webSocketServerSenderSet);
                                         }
                                         webSocketServerSenderSet.add(webSocketServerSender);
@@ -333,7 +333,7 @@ public abstract class WebSocketServer extends org.java_websocket.server.WebSocke
                                                     message, WebSocketPackage.class);
                                     // 获得所有的对应的接收器
                                     Set<WebSocketServerReceiver> webSocketServerReceivers =
-                                            WEB_SOCKET_SERVER_RECEIVER_LIST_TABLE.get(
+                                            WEB_SOCKET_SERVER_RECEIVER_SET_TABLE.get(
                                                     webSocketPackage.getLoop(),
                                                     webSocketPackage.getSubject());
                                     // 遍历接收器

@@ -38,10 +38,10 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
 
     // websocket 接收者table，通过loop,subject确定接收器
     protected final Table<String, String, Set<WebSocketClientReceiver>>
-            WEB_SOCKET_CLIENT_RECEIVER_LIST_TABLE = new Table<>();
+            WEB_SOCKET_CLIENT_RECEIVER_SET_TABLE = new Table<>();
     // websocket 发送者table，通过loop,subject确定发送器
     protected final Table<String, String, Set<WebSocketClientSender>>
-            WEB_SOCKET_CLIENT_SENDER_LIST_TABLE = new Table<>();
+            WEB_SOCKET_CLIENT_SENDER_SET_TABLE = new Table<>();
 
     // 未响应的ping命令次数
     protected int nonResponseCount = 0;
@@ -61,6 +61,9 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
     @Setter(AccessLevel.PRIVATE)
     @Getter
     private Map<String, String> openParamsMap;
+    // 当前webSocketClient的状态
+    @Setter(AccessLevel.PRIVATE)
+    private WebSocketClientStatus webSocketClientStatus;
 
     /**
      * 注册对应的操作器
@@ -77,11 +80,10 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
             if (webSocketClientOperator instanceof WebSocketClientSender) {
                 // 添加到对应的表格中去
                 Set<WebSocketClientSender> webSocketClientSenderSet =
-                        WEB_SOCKET_CLIENT_SENDER_LIST_TABLE.get(loop, subject);
+                        WEB_SOCKET_CLIENT_SENDER_SET_TABLE.get(loop, subject);
                 if (null == webSocketClientSenderSet) {
                     webSocketClientSenderSet = new HashSet<>();
-                    WEB_SOCKET_CLIENT_SENDER_LIST_TABLE.put(
-                            loop, subject, webSocketClientSenderSet);
+                    WEB_SOCKET_CLIENT_SENDER_SET_TABLE.put(loop, subject, webSocketClientSenderSet);
                 }
                 webSocketClientSenderSet.add((WebSocketClientSender) webSocketClientOperator);
                 // 调用子项的回调方法，使得子对象可以获得客户端对象
@@ -91,10 +93,10 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
             else if (webSocketClientOperator instanceof WebSocketClientReceiver) {
                 // 添加到对应的表格中去
                 Set<WebSocketClientReceiver> webSocketClientReceiverSetSet =
-                        WEB_SOCKET_CLIENT_RECEIVER_LIST_TABLE.get(loop, subject);
+                        WEB_SOCKET_CLIENT_RECEIVER_SET_TABLE.get(loop, subject);
                 if (null == webSocketClientReceiverSetSet) {
                     webSocketClientReceiverSetSet = new HashSet<>();
-                    WEB_SOCKET_CLIENT_RECEIVER_LIST_TABLE.put(
+                    WEB_SOCKET_CLIENT_RECEIVER_SET_TABLE.put(
                             loop, subject, webSocketClientReceiverSetSet);
                 }
                 webSocketClientReceiverSetSet.add(
@@ -114,17 +116,39 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
         this.send(SerializeUtil.convertObjectToJson(webSocketPackage));
     }
 
+    /**
+     * 关闭客户端（关闭监听器，将会在下面的撞见方法中被调用）
+     *
+     * @param code the closing code
+     * @param message the closing message
+     */
+    public void close(int code, String message) {
+        super.close(code, message);
+        // 将状态设置为关闭
+        webSocketClientStatus = WebSocketClientStatus.CLOSE;
+    }
+
     /** 连接WebSocket服务器 */
     @Override
     public void connect() {
         super.connect();
+        // 将连接状态置为open
+        webSocketClientStatus = WebSocketClientStatus.OPEN;
         logger.info("连接WebSocket服务器");
         // 每隔一段时间检查一下，如果服务器超过阈值没有返回响应的Pong命令，则进行重连
         AsyncUtil.submitTaskPeriod(
                 () -> {
                     if (nonResponseCount > notResponseThreshold) {
-                        logger.debug("尝试重新连接WebSocket服务器");
-                        this.connect();
+                        // 非手动关闭，则尝试进行连接
+                        if (webSocketClientStatus == WebSocketClientStatus.OPEN) {
+                            logger.debug("尝试重新连接WebSocket服务器");
+                            this.connect();
+                        } else {
+                            // 手动关闭的情况，则将状态设置为关闭
+                            webSocketClientStatus = WebSocketClientStatus.CLOSE;
+                            // 通过抛出异常，来停止检查器
+                            throw new RuntimeException("停止检查器");
+                        }
                     }
                 },
                 checkDelayTime,
@@ -150,7 +174,7 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
         private int checkDelayTime = 3;
         // 检查活动的周期时间
         private int checkPeriodTime = 15;
-        // 检查活动的非活跃时间
+        // 检查活动的非活跃次数
         private int notResponseThreshold = 3;
         // 头部参数
         @Setter(AccessLevel.NONE)
@@ -196,7 +220,7 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
                                                 message, WebSocketPackage.class);
                                 // 获得所有的对应的接收器
                                 Set<WebSocketClientReceiver> webSocketClientReceivers =
-                                        WEB_SOCKET_CLIENT_RECEIVER_LIST_TABLE.get(
+                                        WEB_SOCKET_CLIENT_RECEIVER_SET_TABLE.get(
                                                 webSocketPackage.getLoop(),
                                                 webSocketPackage.getSubject());
                                 // 遍历接收器
@@ -259,6 +283,8 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
                 webSocketClient.setNotResponseThreshold(notResponseThreshold);
                 // 设置初始化参数
                 webSocketClient.setOpenParamsMap(openParamsMap);
+                // 设置为等待状态
+                webSocketClient.setWebSocketClientStatus(WebSocketClientStatus.WAIT);
                 // 返回客户端对象
                 return webSocketClient;
             } else {
@@ -266,5 +292,14 @@ public abstract class WebSocketClient extends org.java_websocket.client.WebSocke
                         SkyeUtilsExceptionType.WebSocketClientParamErrorException);
             }
         }
+    }
+
+    public enum WebSocketClientStatus {
+        // 刚创建，没有连接
+        WAIT,
+        // 打开状态
+        OPEN,
+        // 关闭状态
+        CLOSE,
     }
 }
