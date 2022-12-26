@@ -31,7 +31,7 @@ public class DateTimeUtil {
     private static final Logger logger = SkyeLogger.getLogger();
 
     /** 全局的格式化字符串,其存在默认值 */
-    private static String[] globalDateFormatString = {"yyyy-MM-dd hh:mm:ss"};
+    private static String[] globalDateFormatString = {"yyyy-MM-dd HH:mm:ss"};
 
     /**
      * 初始化全局时间字符串
