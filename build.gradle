@@ -3,6 +3,11 @@ plugins {
     id 'maven-publish'
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+
 repositories {
     mavenLocal()
     maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
