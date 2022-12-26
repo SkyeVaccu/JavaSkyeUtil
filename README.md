@@ -103,6 +103,18 @@ SerializeUtil.convertJsonToBeanByClass("{\"name\":"123"}",Username.class);
 Table<String, String,int>table=new Table();
 ```  
 
+#### 数据类型转换器
+```java
+
+// Object 转 Integer，并设置转换失败默认值
+Integer integer = Convert.toInt(123, 0);
+System.out.print(integer);
+
+// Object 转 String，并设置转换失败默认值
+String str = Convert.toStr(123, "");
+System.out.print(str);
+```
+
 #### 时间工具
 
 自带默认时间转换格式`yyyy-MM-dd hh:mm:ss`
@@ -110,10 +122,46 @@ Table<String, String,int>table=new Table();
 ```java
 //初始化一些待定的时间格式
 DateTimeUtil.initGlobalDateFormatString("yyyy-MM-dd","yyyy-MM-dd hh:mm:ss","yyyy-MM-dd hh");
+
 //将时间从字符串转换成Date对象，如果没有转入对应的格式字符串会调用默认的
 DateTimeUtil.convertStringToDate("2022-11-27 10");
+
 //将时间转换为字符串，如果没有转入对应的格式字符串会调用默认的
 DateTimeUtil.convertDateToString(new Date());
+
+// 获取当前虚拟机启动时间
+DateTimeUtil.getServerStartDate();
+System.out.println(DateTimeUtil.convertDateToString(serverStartDate));  // 2022-12-26 10:53:55
+
+// 计算两个时间差
+String datePoor = DateTimeUtil.getDatePoor(
+        DateTimeUtil.convertStringToDate("2018-07-16 13:25:23"),
+        DateTimeUtil.convertStringToDate("2018-07-16 12:25:23"));
+System.out.println(datePoor);   // 0天1小时0分钟
+
+// 获取当前日期
+String dateStr = DateTimeUtil.getDate();
+System.out.println(dateStr);    // 2022-12-26
+
+// 获取当前日期时间
+String dateStr = DateTimeUtil.getTime();
+System.out.println(dateStr);    // 2022-12-26 11:12:35
+
+// 获取当前自定义日期格式
+String dateStr = DateTimeUtil.dateTimeNow(DateTimeUtil.YYYYMMDDHHMMSS);
+System.out.println(dateStr);
+
+// 获取Date 对象的日期部分
+        String dateStr = DateTimeUtil.dateTime(new Date());
+        System.out.println(dateStr);    // 2022-12-26
+
+// Date 对象格式化为指定格式字符串
+        String dateStr = DateTimeUtil.parseDateToStr(DateTimeUtil.YYYY_MM_DD_HH_MM_SS,new Date());
+        System.out.println(dateStr);    // 2022-12-26 11:24:55
+
+// Date 字符串格式化为执行格式 Date
+        Date date = DateTimeUtil.dateTime(DateTimeUtil.YYYY_MM_DD, "2022-12-26 11:21:06");
+        System.out.println(date);   // Mon Dec 26 00:00:00 CST 2022
 ```
 
 #### 时间判断器
