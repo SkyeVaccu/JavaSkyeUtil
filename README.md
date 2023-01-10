@@ -206,24 +206,10 @@ DateTimeUtil.getServerStartDate();
 System.out.println(DateTimeUtil.convertDateToString(serverStartDate));  // 2022-12-26 10:53:55
 ```
 
-
-
-**时间差计算**
-
-```java
-String datePoor = DateTimeUtil.getDatePoor(
-        DateTimeUtil.convertStringToDate("2018-07-16 13:25:23"),
-        DateTimeUtil.convertStringToDate("2018-07-16 12:25:23"));
-
-System.out.println(datePoor);   // 0天1小时0分钟
-```
-
-
-
 **获取当前日期**
 
 ```java
-String dateStr = DateTimeUtil.getDate();
+String dateStr = DateTimeUtil.DateNow();
 System.out.println(dateStr);    // 2022-12-26
 ```
 
@@ -232,47 +218,9 @@ System.out.println(dateStr);    // 2022-12-26
 **获取当前日期时间**
 
 ```java
-String dateStr = DateTimeUtil.getTime();
+String dateStr = DateTimeUtil.DateTimeNow();
 System.out.println(dateStr);    // 2022-12-26 11:12:35
 ```
-
-
-
-**获取自定义格式日期**
-
-```java
-String dateStr = DateTimeUtil.dateTimeNow(DateTimeUtil.YYYYMMDDHHMMSS);
-System.out.println(dateStr);
-```
-
-
-
- **获取Date 对象的日期部分**
-
-```java
-String dateStr = DateTimeUtil.dateTime(new Date());
-System.out.println(dateStr);    // 2022-12-26
-```
-
-
-
-**Date 对象格式化为指定格式字符串**
-
-```java
-String dateStr = DateTimeUtil.parseDateToStr(DateTimeUtil.YYYY_MM_DD_HH_MM_SS,new Date());
-System.out.println(dateStr);    // 2022-12-26 11:24:55
-```
-
-
-
-**Date 字符串格式化为指定格式 Date**
-
-```java
-Date date = DateTimeUtil.dateTime(DateTimeUtil.YYYY_MM_DD, "2022-12-26 11:21:06");
-System.out.println(date);   // Mon Dec 26 00:00:00 CST 2022
-```
-
-
 
 ### 时间判断器 DateFilter
 
