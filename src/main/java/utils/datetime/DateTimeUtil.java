@@ -8,14 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import java.lang.management.ManagementFactory;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * @Description 时间工具 @Author Skye @Date 2022/11/25 10:59
- */
+/** @Description 时间工具 @Author Skye @Date 2022/11/25 10:59 */
 public class DateTimeUtil {
 
     public static final String YYYY = "yyyy";
@@ -59,7 +55,7 @@ public class DateTimeUtil {
     /**
      * 将字符串转成日期类型，允许用户传入多个格式字符串，按照顺序依次 转换，直到找到第一个成功的为止
      *
-     * @param timeStr          时间字符串
+     * @param timeStr 时间字符串
      * @param dateFormatString 用户传入的不定长的格式字符串
      * @return 转换后的时间对象
      */
@@ -76,8 +72,12 @@ public class DateTimeUtil {
         Date resultDate = null;
         // 按照顺序进行转换
         for (String temp : dateFormatString) {
-            resultDate = dateTime(temp, timeStr);
-            break;
+            try {
+                resultDate = new SimpleDateFormat(temp).parse(timeStr);
+                break;
+            } catch (Exception e) {
+                logger.debug("当前的字符串格式错误解析错误");
+            }
         }
         // 转换失败
         if (null == resultDate) {
@@ -90,7 +90,7 @@ public class DateTimeUtil {
     /**
      * 将对应的日期对象按照格式转化为字符串，允许多个格式字符串，依次找到第一个合适的结束
      *
-     * @param date             日期对象
+     * @param date 日期对象
      * @param dateFormatString 格式字符串
      * @return 转换后的时间字符串
      */
@@ -110,7 +110,7 @@ public class DateTimeUtil {
 
         for (String temp : dateFormatString) {
             try {
-                dateString = parseDateToStr(temp, date);
+                dateString = new SimpleDateFormat(temp).format(date);
                 break;
             } catch (Exception e) {
                 logger.debug("当前的字符串格式错误转换错误");
@@ -126,66 +126,28 @@ public class DateTimeUtil {
     /**
      * 获取当前日期, 默认格式为yyyy-MM-dd
      *
-     * @return String
+     * @return String 当前的日期
      */
-    public static String getDate() {
-        return dateTimeNow(YYYY_MM_DD);
+    public static String DateNow() {
+        return convertDateToString(new Date(), YYYY_MM_DD);
     }
 
-    public static String getTime() {
-        return dateTimeNow(YYYY_MM_DD_HH_MM_SS);
+    /**
+     * 获取当前的完整正式时间，格式为YYYY_MM_DD_HH_MM_SS
+     *
+     * @return 当前的日期时间
+     */
+    public static String DateTimeNow() {
+        return convertDateToString(new Date(), YYYY_MM_DD_HH_MM_SS);
     }
-
-    public static String dateTimeNow(final String format) {
-        return parseDateToStr(format, new Date());
-    }
-
-    public static String dateTime(final Date date) {
-        return parseDateToStr(YYYY_MM_DD, date);
-    }
-
-    public static String parseDateToStr(final String format, final Date date) {
-        return new SimpleDateFormat(format).format(date);
-    }
-
-    public static Date dateTime(final String format, final String ts) {
-        try {
-            return new SimpleDateFormat(format).parse(ts);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 
     /**
      * 获取虚拟机启动时间
+     *
+     * @return Date 虚拟机启动时间
      */
     public static Date getServerStartDate() {
         long time = ManagementFactory.getRuntimeMXBean().getStartTime();
         return new Date(time);
-    }
-
-    /**
-     * @param endDate 结束时间
-     * @param nowDate 开始时间
-     * @return date
-     */
-    public static String getDatePoor(Date endDate, Date nowDate) {
-
-        long nd = 1000 * 24 * 60 * 60;
-        long nh = 1000 * 60 * 60;
-        long nm = 1000 * 60;
-        // long ns = 1000;
-        // 获得两个时间的毫秒时间差异
-        long diff = endDate.getTime() - nowDate.getTime();
-        // 计算差多少天
-        long day = diff / nd;
-        // 计算差多少小时
-        long hour = diff % nd / nh;
-        // 计算差多少分钟
-        long min = diff % nd % nh / nm;
-        // 计算差多少秒//输出结果
-        // long sec = diff % nd % nh % nm / ns;
-        return day + "天" + hour + "小时" + min + "分钟";
     }
 }
