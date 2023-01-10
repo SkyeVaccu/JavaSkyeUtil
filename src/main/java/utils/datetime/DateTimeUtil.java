@@ -128,7 +128,7 @@ public class DateTimeUtil {
      *
      * @return String 当前的日期
      */
-    public static String DateNow() {
+    public static String dateNow() {
         return convertDateToString(new Date(), YYYY_MM_DD);
     }
 
@@ -137,7 +137,7 @@ public class DateTimeUtil {
      *
      * @return 当前的日期时间
      */
-    public static String DateTimeNow() {
+    public static String dateTimeNow() {
         return convertDateToString(new Date(), YYYY_MM_DD_HH_MM_SS);
     }
 

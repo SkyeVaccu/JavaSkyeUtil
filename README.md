@@ -209,7 +209,7 @@ System.out.println(DateTimeUtil.convertDateToString(serverStartDate));  // 2022-
 **获取当前日期**
 
 ```java
-String dateStr = DateTimeUtil.DateNow();
+String dateStr = DateTimeUtil.dateNow();
 System.out.println(dateStr);    // 2022-12-26
 ```
 
@@ -218,7 +218,7 @@ System.out.println(dateStr);    // 2022-12-26
 **获取当前日期时间**
 
 ```java
-String dateStr = DateTimeUtil.DateTimeNow();
+String dateStr = DateTimeUtil.dateTimeNow();
 System.out.println(dateStr);    // 2022-12-26 11:12:35
 ```
 
